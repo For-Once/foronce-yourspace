@@ -15,8 +15,19 @@ import { INBETWEEN_PHRASES, randomFrom } from "@/lib/copy";
 import { useEffect, useMemo, useState } from "react";
 
 export const Route = createFileRoute("/_app/home")({
+  head: () => ({
+    meta: [
+      { title: "Your Home — For Once" },
+      {
+        name: "description",
+        content:
+          "Your calm starting point. Choose where to go — vent, journal privately, celebrate the good stuff, or find gentle support.",
+      },
+    ],
+  }),
   component: HomePage,
 });
+
 
 const SPACES = [
   {
