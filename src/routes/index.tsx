@@ -128,7 +128,7 @@ function Landing() {
           </span>
           {presence} people are here right now
         </div>
-      </div>
+      </main>
     </div>
   );
 }
