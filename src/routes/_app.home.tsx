@@ -81,6 +81,8 @@ const SPACES = [
 function HomePage() {
   const { profile } = useProfile();
   const mood = profile?.todayMood ? getMood(profile.todayMood) : undefined;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const phrase = useMemo(() => randomFrom(INBETWEEN_PHRASES), []);
 
   const hour = new Date().getHours();
