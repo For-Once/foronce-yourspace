@@ -114,6 +114,8 @@ export function AppShell({ children }: { children: ReactNode }) {
           })}
         </div>
       </nav>
+
+      <Toaster position="top-center" theme="dark" />
     </div>
   );
 }
