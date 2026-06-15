@@ -7,7 +7,6 @@ import {
   Sparkles,
   MessageCircleHeart,
   HeartHandshake,
-  LifeBuoy,
   ArrowRight,
 } from "lucide-react";
 import { useProfile } from "@/lib/profile";
