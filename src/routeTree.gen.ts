@@ -20,7 +20,6 @@ import { Route as AppJournalRouteImport } from './routes/_app.journal'
 import { Route as AppItWasRealRouteImport } from './routes/_app.it-was-real'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
 import { Route as AppGoodStuffRouteImport } from './routes/_app.good-stuff'
-import { Route as AppCopingRouteImport } from './routes/_app.coping'
 import { Route as AppCommunityRouteImport } from './routes/_app.community'
 import { Route as AppBackupRouteImport } from './routes/_app.backup'
 
@@ -78,11 +77,6 @@ const AppGoodStuffRoute = AppGoodStuffRouteImport.update({
   path: '/good-stuff',
   getParentRoute: () => AppRoute,
 } as any)
-const AppCopingRoute = AppCopingRouteImport.update({
-  id: '/coping',
-  path: '/coping',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppCommunityRoute = AppCommunityRouteImport.update({
   id: '/community',
   path: '/community',
@@ -100,7 +94,6 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/backup': typeof AppBackupRoute
   '/community': typeof AppCommunityRoute
-  '/coping': typeof AppCopingRoute
   '/good-stuff': typeof AppGoodStuffRoute
   '/home': typeof AppHomeRoute
   '/it-was-real': typeof AppItWasRealRoute
@@ -115,7 +108,6 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/backup': typeof AppBackupRoute
   '/community': typeof AppCommunityRoute
-  '/coping': typeof AppCopingRoute
   '/good-stuff': typeof AppGoodStuffRoute
   '/home': typeof AppHomeRoute
   '/it-was-real': typeof AppItWasRealRoute
@@ -132,7 +124,6 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_app/backup': typeof AppBackupRoute
   '/_app/community': typeof AppCommunityRoute
-  '/_app/coping': typeof AppCopingRoute
   '/_app/good-stuff': typeof AppGoodStuffRoute
   '/_app/home': typeof AppHomeRoute
   '/_app/it-was-real': typeof AppItWasRealRoute
@@ -149,7 +140,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/backup'
     | '/community'
-    | '/coping'
     | '/good-stuff'
     | '/home'
     | '/it-was-real'
@@ -164,7 +154,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/backup'
     | '/community'
-    | '/coping'
     | '/good-stuff'
     | '/home'
     | '/it-was-real'
@@ -180,7 +169,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/_app/backup'
     | '/_app/community'
-    | '/_app/coping'
     | '/_app/good-stuff'
     | '/_app/home'
     | '/_app/it-was-real'
@@ -276,13 +264,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppGoodStuffRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/coping': {
-      id: '/_app/coping'
-      path: '/coping'
-      fullPath: '/coping'
-      preLoaderRoute: typeof AppCopingRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/community': {
       id: '/_app/community'
       path: '/community'
@@ -303,7 +284,6 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppBackupRoute: typeof AppBackupRoute
   AppCommunityRoute: typeof AppCommunityRoute
-  AppCopingRoute: typeof AppCopingRoute
   AppGoodStuffRoute: typeof AppGoodStuffRoute
   AppHomeRoute: typeof AppHomeRoute
   AppItWasRealRoute: typeof AppItWasRealRoute
@@ -316,7 +296,6 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppBackupRoute: AppBackupRoute,
   AppCommunityRoute: AppCommunityRoute,
-  AppCopingRoute: AppCopingRoute,
   AppGoodStuffRoute: AppGoodStuffRoute,
   AppHomeRoute: AppHomeRoute,
   AppItWasRealRoute: AppItWasRealRoute,
