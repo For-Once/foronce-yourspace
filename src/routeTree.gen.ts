@@ -16,6 +16,7 @@ import { Route as AppYourSpaceRouteImport } from './routes/_app.your-space'
 import { Route as AppJournalRouteImport } from './routes/_app.journal'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
 import { Route as AppGoodStuffRouteImport } from './routes/_app.good-stuff'
+import { Route as AppCommunityRouteImport } from './routes/_app.community'
 
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
@@ -51,10 +52,16 @@ const AppGoodStuffRoute = AppGoodStuffRouteImport.update({
   path: '/good-stuff',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCommunityRoute = AppCommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/onboarding': typeof OnboardingRoute
+  '/community': typeof AppCommunityRoute
   '/good-stuff': typeof AppGoodStuffRoute
   '/home': typeof AppHomeRoute
   '/journal': typeof AppJournalRoute
@@ -63,6 +70,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/onboarding': typeof OnboardingRoute
+  '/community': typeof AppCommunityRoute
   '/good-stuff': typeof AppGoodStuffRoute
   '/home': typeof AppHomeRoute
   '/journal': typeof AppJournalRoute
@@ -73,6 +81,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/onboarding': typeof OnboardingRoute
+  '/_app/community': typeof AppCommunityRoute
   '/_app/good-stuff': typeof AppGoodStuffRoute
   '/_app/home': typeof AppHomeRoute
   '/_app/journal': typeof AppJournalRoute
@@ -83,17 +92,26 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/onboarding'
+    | '/community'
     | '/good-stuff'
     | '/home'
     | '/journal'
     | '/your-space'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/onboarding' | '/good-stuff' | '/home' | '/journal' | '/your-space'
+  to:
+    | '/'
+    | '/onboarding'
+    | '/community'
+    | '/good-stuff'
+    | '/home'
+    | '/journal'
+    | '/your-space'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/onboarding'
+    | '/_app/community'
     | '/_app/good-stuff'
     | '/_app/home'
     | '/_app/journal'
@@ -157,10 +175,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppGoodStuffRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/community': {
+      id: '/_app/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof AppCommunityRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppCommunityRoute: typeof AppCommunityRoute
   AppGoodStuffRoute: typeof AppGoodStuffRoute
   AppHomeRoute: typeof AppHomeRoute
   AppJournalRoute: typeof AppJournalRoute
@@ -168,6 +194,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppCommunityRoute: AppCommunityRoute,
   AppGoodStuffRoute: AppGoodStuffRoute,
   AppHomeRoute: AppHomeRoute,
   AppJournalRoute: AppJournalRoute,
