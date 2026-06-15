@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { MandalaBackground } from "./MandalaBackground";
 import { CrisisButton } from "./CrisisButton";
+import { Toaster } from "./ui/sonner";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
