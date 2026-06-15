@@ -76,20 +76,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      { title: "For Once — Be a little selfish about how you feel" },
+      {
+        name: "description",
+        content:
+          "A safe, anonymous space for everything you feel — the hard stuff and the good stuff too.",
+      },
+      { name: "theme-color", content: "#1e3a3a" },
+      { property: "og:title", content: "For Once" },
+      {
+        property: "og:description",
+        content: "A safe, anonymous space for everything you feel.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Mulish:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap",
       },
     ],
   }),
