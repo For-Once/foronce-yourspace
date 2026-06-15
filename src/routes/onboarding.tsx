@@ -61,7 +61,7 @@ function Onboarding() {
   return (
     <div className="relative min-h-screen">
       <MandalaBackground />
-      <div className="mx-auto flex min-h-screen max-w-xl flex-col justify-center px-5 py-16">
+      <main className="mx-auto flex min-h-screen max-w-xl flex-col justify-center px-5 py-16">
         <div className="mb-8 flex items-center justify-between">
           <div className="flex gap-1.5">
             {[0, 1, 2].map((i) => (
