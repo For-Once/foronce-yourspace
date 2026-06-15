@@ -13,6 +13,8 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppYourSpaceRouteImport } from './routes/_app.your-space'
+import { Route as AppPromptsRouteImport } from './routes/_app.prompts'
+import { Route as AppMusicRouteImport } from './routes/_app.music'
 import { Route as AppJournalRouteImport } from './routes/_app.journal'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
 import { Route as AppGoodStuffRouteImport } from './routes/_app.good-stuff'
@@ -35,6 +37,16 @@ const IndexRoute = IndexRouteImport.update({
 const AppYourSpaceRoute = AppYourSpaceRouteImport.update({
   id: '/your-space',
   path: '/your-space',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPromptsRoute = AppPromptsRouteImport.update({
+  id: '/prompts',
+  path: '/prompts',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMusicRoute = AppMusicRouteImport.update({
+  id: '/music',
+  path: '/music',
   getParentRoute: () => AppRoute,
 } as any)
 const AppJournalRoute = AppJournalRouteImport.update({
@@ -65,6 +77,8 @@ export interface FileRoutesByFullPath {
   '/good-stuff': typeof AppGoodStuffRoute
   '/home': typeof AppHomeRoute
   '/journal': typeof AppJournalRoute
+  '/music': typeof AppMusicRoute
+  '/prompts': typeof AppPromptsRoute
   '/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRoutesByTo {
@@ -74,6 +88,8 @@ export interface FileRoutesByTo {
   '/good-stuff': typeof AppGoodStuffRoute
   '/home': typeof AppHomeRoute
   '/journal': typeof AppJournalRoute
+  '/music': typeof AppMusicRoute
+  '/prompts': typeof AppPromptsRoute
   '/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRoutesById {
@@ -85,6 +101,8 @@ export interface FileRoutesById {
   '/_app/good-stuff': typeof AppGoodStuffRoute
   '/_app/home': typeof AppHomeRoute
   '/_app/journal': typeof AppJournalRoute
+  '/_app/music': typeof AppMusicRoute
+  '/_app/prompts': typeof AppPromptsRoute
   '/_app/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRouteTypes {
@@ -96,6 +114,8 @@ export interface FileRouteTypes {
     | '/good-stuff'
     | '/home'
     | '/journal'
+    | '/music'
+    | '/prompts'
     | '/your-space'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -105,6 +125,8 @@ export interface FileRouteTypes {
     | '/good-stuff'
     | '/home'
     | '/journal'
+    | '/music'
+    | '/prompts'
     | '/your-space'
   id:
     | '__root__'
@@ -115,6 +137,8 @@ export interface FileRouteTypes {
     | '/_app/good-stuff'
     | '/_app/home'
     | '/_app/journal'
+    | '/_app/music'
+    | '/_app/prompts'
     | '/_app/your-space'
   fileRoutesById: FileRoutesById
 }
@@ -154,6 +178,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppYourSpaceRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/prompts': {
+      id: '/_app/prompts'
+      path: '/prompts'
+      fullPath: '/prompts'
+      preLoaderRoute: typeof AppPromptsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/music': {
+      id: '/_app/music'
+      path: '/music'
+      fullPath: '/music'
+      preLoaderRoute: typeof AppMusicRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/journal': {
       id: '/_app/journal'
       path: '/journal'
@@ -190,6 +228,8 @@ interface AppRouteChildren {
   AppGoodStuffRoute: typeof AppGoodStuffRoute
   AppHomeRoute: typeof AppHomeRoute
   AppJournalRoute: typeof AppJournalRoute
+  AppMusicRoute: typeof AppMusicRoute
+  AppPromptsRoute: typeof AppPromptsRoute
   AppYourSpaceRoute: typeof AppYourSpaceRoute
 }
 
@@ -198,6 +238,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppGoodStuffRoute: AppGoodStuffRoute,
   AppHomeRoute: AppHomeRoute,
   AppJournalRoute: AppJournalRoute,
+  AppMusicRoute: AppMusicRoute,
+  AppPromptsRoute: AppPromptsRoute,
   AppYourSpaceRoute: AppYourSpaceRoute,
 }
 
