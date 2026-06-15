@@ -81,20 +81,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "A safe, anonymous space for everything you feel — the hard stuff and the good stuff too.",
+          "For Once is an anonymous, judgment-free emotional wellness space for teens and young adults — for the hard feelings and the beautiful ones equally.",
       },
       { name: "theme-color", content: "#1e3a3a" },
       { property: "og:title", content: "For Once — Be a little selfish about how you feel" },
       {
         property: "og:description",
-        content: "A safe, anonymous space for everything you feel.",
+        content:
+          "An anonymous, judgment-free emotional wellness space for everything you feel — the hard stuff and the good stuff too.",
       },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:site_name", content: "For Once" },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "For Once — Be a little selfish about how you feel" },
-      { name: "description", content: "For Once is an anonymous, judgment-free emotional wellness platform for teens and young adults." },
-      { property: "og:description", content: "For Once is an anonymous, judgment-free emotional wellness platform for teens and young adults." },
-      { name: "twitter:description", content: "For Once is an anonymous, judgment-free emotional wellness platform for teens and young adults." },
+      {
+        name: "twitter:description",
+        content:
+          "An anonymous, judgment-free emotional wellness space for everything you feel — the hard stuff and the good stuff too.",
+      },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dc444d4c-7e92-4ad6-8e55-d97c10f39f00/id-preview-759ac3f9--212b9976-6cda-4c48-b7e5-c38f0cc1511e.lovable.app-1781511936944.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dc444d4c-7e92-4ad6-8e55-d97c10f39f00/id-preview-759ac3f9--212b9976-6cda-4c48-b7e5-c38f0cc1511e.lovable.app-1781511936944.png" },
     ],
