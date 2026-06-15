@@ -16,8 +16,10 @@ import { Route as AppYourSpaceRouteImport } from './routes/_app.your-space'
 import { Route as AppPromptsRouteImport } from './routes/_app.prompts'
 import { Route as AppMusicRouteImport } from './routes/_app.music'
 import { Route as AppJournalRouteImport } from './routes/_app.journal'
+import { Route as AppItWasRealRouteImport } from './routes/_app.it-was-real'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
 import { Route as AppGoodStuffRouteImport } from './routes/_app.good-stuff'
+import { Route as AppCopingRouteImport } from './routes/_app.coping'
 import { Route as AppCommunityRouteImport } from './routes/_app.community'
 
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -54,6 +56,11 @@ const AppJournalRoute = AppJournalRouteImport.update({
   path: '/journal',
   getParentRoute: () => AppRoute,
 } as any)
+const AppItWasRealRoute = AppItWasRealRouteImport.update({
+  id: '/it-was-real',
+  path: '/it-was-real',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppHomeRoute = AppHomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -62,6 +69,11 @@ const AppHomeRoute = AppHomeRouteImport.update({
 const AppGoodStuffRoute = AppGoodStuffRouteImport.update({
   id: '/good-stuff',
   path: '/good-stuff',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCopingRoute = AppCopingRouteImport.update({
+  id: '/coping',
+  path: '/coping',
   getParentRoute: () => AppRoute,
 } as any)
 const AppCommunityRoute = AppCommunityRouteImport.update({
@@ -74,8 +86,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/onboarding': typeof OnboardingRoute
   '/community': typeof AppCommunityRoute
+  '/coping': typeof AppCopingRoute
   '/good-stuff': typeof AppGoodStuffRoute
   '/home': typeof AppHomeRoute
+  '/it-was-real': typeof AppItWasRealRoute
   '/journal': typeof AppJournalRoute
   '/music': typeof AppMusicRoute
   '/prompts': typeof AppPromptsRoute
@@ -85,8 +99,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/onboarding': typeof OnboardingRoute
   '/community': typeof AppCommunityRoute
+  '/coping': typeof AppCopingRoute
   '/good-stuff': typeof AppGoodStuffRoute
   '/home': typeof AppHomeRoute
+  '/it-was-real': typeof AppItWasRealRoute
   '/journal': typeof AppJournalRoute
   '/music': typeof AppMusicRoute
   '/prompts': typeof AppPromptsRoute
@@ -98,8 +114,10 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/_app/community': typeof AppCommunityRoute
+  '/_app/coping': typeof AppCopingRoute
   '/_app/good-stuff': typeof AppGoodStuffRoute
   '/_app/home': typeof AppHomeRoute
+  '/_app/it-was-real': typeof AppItWasRealRoute
   '/_app/journal': typeof AppJournalRoute
   '/_app/music': typeof AppMusicRoute
   '/_app/prompts': typeof AppPromptsRoute
@@ -111,8 +129,10 @@ export interface FileRouteTypes {
     | '/'
     | '/onboarding'
     | '/community'
+    | '/coping'
     | '/good-stuff'
     | '/home'
+    | '/it-was-real'
     | '/journal'
     | '/music'
     | '/prompts'
@@ -122,8 +142,10 @@ export interface FileRouteTypes {
     | '/'
     | '/onboarding'
     | '/community'
+    | '/coping'
     | '/good-stuff'
     | '/home'
+    | '/it-was-real'
     | '/journal'
     | '/music'
     | '/prompts'
@@ -134,8 +156,10 @@ export interface FileRouteTypes {
     | '/_app'
     | '/onboarding'
     | '/_app/community'
+    | '/_app/coping'
     | '/_app/good-stuff'
     | '/_app/home'
+    | '/_app/it-was-real'
     | '/_app/journal'
     | '/_app/music'
     | '/_app/prompts'
@@ -199,6 +223,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppJournalRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/it-was-real': {
+      id: '/_app/it-was-real'
+      path: '/it-was-real'
+      fullPath: '/it-was-real'
+      preLoaderRoute: typeof AppItWasRealRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/home': {
       id: '/_app/home'
       path: '/home'
@@ -213,6 +244,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppGoodStuffRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/coping': {
+      id: '/_app/coping'
+      path: '/coping'
+      fullPath: '/coping'
+      preLoaderRoute: typeof AppCopingRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/community': {
       id: '/_app/community'
       path: '/community'
@@ -225,8 +263,10 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppCommunityRoute: typeof AppCommunityRoute
+  AppCopingRoute: typeof AppCopingRoute
   AppGoodStuffRoute: typeof AppGoodStuffRoute
   AppHomeRoute: typeof AppHomeRoute
+  AppItWasRealRoute: typeof AppItWasRealRoute
   AppJournalRoute: typeof AppJournalRoute
   AppMusicRoute: typeof AppMusicRoute
   AppPromptsRoute: typeof AppPromptsRoute
@@ -235,8 +275,10 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppCommunityRoute: AppCommunityRoute,
+  AppCopingRoute: AppCopingRoute,
   AppGoodStuffRoute: AppGoodStuffRoute,
   AppHomeRoute: AppHomeRoute,
+  AppItWasRealRoute: AppItWasRealRoute,
   AppJournalRoute: AppJournalRoute,
   AppMusicRoute: AppMusicRoute,
   AppPromptsRoute: AppPromptsRoute,
