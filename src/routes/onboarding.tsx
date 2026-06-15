@@ -159,7 +159,7 @@ function Onboarding() {
             </Button>
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }
