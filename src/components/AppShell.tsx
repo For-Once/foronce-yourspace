@@ -34,6 +34,7 @@ const NAV: NavItem[] = [
   { to: "/prompts", label: "Guided Prompts", icon: MessageCircleHeart },
   { to: "/it-was-real", label: "It Was Real", icon: HeartHandshake },
   { to: "/coping", label: "When It's Hard", icon: LifeBuoy },
+  { to: "/backup", label: "Backup & Restore", icon: ShieldCheck },
 ];
 
 function NavLink({ item, collapsed }: { item: NavItem; collapsed?: boolean }) {
