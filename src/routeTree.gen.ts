@@ -13,6 +13,7 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppYourSpaceRouteImport } from './routes/_app.your-space'
+import { Route as AppJournalRouteImport } from './routes/_app.journal'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
 
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -34,6 +35,11 @@ const AppYourSpaceRoute = AppYourSpaceRouteImport.update({
   path: '/your-space',
   getParentRoute: () => AppRoute,
 } as any)
+const AppJournalRoute = AppJournalRouteImport.update({
+  id: '/journal',
+  path: '/journal',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppHomeRoute = AppHomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -44,12 +50,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/onboarding': typeof OnboardingRoute
   '/home': typeof AppHomeRoute
+  '/journal': typeof AppJournalRoute
   '/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/onboarding': typeof OnboardingRoute
   '/home': typeof AppHomeRoute
+  '/journal': typeof AppJournalRoute
   '/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRoutesById {
@@ -58,19 +66,21 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/_app/home': typeof AppHomeRoute
+  '/_app/journal': typeof AppJournalRoute
   '/_app/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/onboarding' | '/home' | '/your-space'
+  fullPaths: '/' | '/onboarding' | '/home' | '/journal' | '/your-space'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/onboarding' | '/home' | '/your-space'
+  to: '/' | '/onboarding' | '/home' | '/journal' | '/your-space'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/onboarding'
     | '/_app/home'
+    | '/_app/journal'
     | '/_app/your-space'
   fileRoutesById: FileRoutesById
 }
@@ -110,6 +120,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppYourSpaceRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/journal': {
+      id: '/_app/journal'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof AppJournalRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/home': {
       id: '/_app/home'
       path: '/home'
@@ -122,11 +139,13 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppHomeRoute: typeof AppHomeRoute
+  AppJournalRoute: typeof AppJournalRoute
   AppYourSpaceRoute: typeof AppYourSpaceRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppHomeRoute: AppHomeRoute,
+  AppJournalRoute: AppJournalRoute,
   AppYourSpaceRoute: AppYourSpaceRoute,
 }
 
