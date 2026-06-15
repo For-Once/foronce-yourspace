@@ -103,6 +103,7 @@ function HomePage() {
       <header className="mb-10">
         <p className="text-sm text-muted-foreground">{mounted ? greeting : "hello"},</p>
         <h1 className="font-hand text-5xl font-bold text-cream lg:text-6xl">
+          <span className="sr-only">Welcome to your For Once home, </span>
           {profile?.username ?? "friend"}
         </h1>
         {mood && (
