@@ -11,7 +11,16 @@ import { affirm } from "@/lib/affirm";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_app/your-space")({
-  head: () => ({ meta: [{ title: "Your Space — For Once" }] }),
+  head: () => ({
+    meta: [
+      { title: "Your Space — For Once" },
+      {
+        name: "description",
+        content:
+          "Say whatever you need to — vent it or celebrate it. Write or record privately, or share it gently with the community.",
+      },
+    ],
+  }),
   component: YourSpace,
 });
 

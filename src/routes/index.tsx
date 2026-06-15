@@ -70,7 +70,7 @@ function Landing() {
         ))}
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center px-5 py-20 text-center">
+      <main className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center px-5 py-20 text-center">
         <span className="page-enter mb-6 rounded-full border border-border bg-card/50 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur-sm">
           a 2am safe space · for all feelings
         </span>
@@ -128,7 +128,7 @@ function Landing() {
           </span>
           {presence} people are here right now
         </div>
-      </div>
+      </main>
     </div>
   );
 }

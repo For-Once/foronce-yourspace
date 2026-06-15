@@ -1,0 +1,19 @@
+# For Once
+
+> An anonymous, judgment-free emotional wellness space for teens and young adults (13–25) — for the hard feelings and the beautiful ones equally. Everything is private and stored on the user's own device.
+
+For Once is a calm, safe "2am" space to feel whatever you're feeling, write it down, and find gentle support. No real names, no forced signup.
+
+## Pages
+
+- [Home](/): What For Once is and how to enter anonymously.
+- [Your Space](/your-space): Say whatever you need to — vent it or celebrate it.
+- [The Good Stuff](/good-stuff): A space just for joy, gratitude, and good days.
+- [Community](/community): Hold each other and share good things, anonymously.
+- [Music](/music): Playlists sorted by feelings, not genres.
+- [Guided Prompts](/prompts): Gentle ways to start when you don't know how.
+- [It Was Real](/it-was-real): For everything you felt that was never returned.
+
+## Optional
+
+- [Onboarding](/onboarding): A short, gentle intro flow.

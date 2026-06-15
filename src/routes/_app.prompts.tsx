@@ -8,7 +8,16 @@ import { getMood } from "@/lib/moods";
 import { randomFrom } from "@/lib/copy";
 
 export const Route = createFileRoute("/_app/prompts")({
-  head: () => ({ meta: [{ title: "Guided Prompts — For Once" }] }),
+  head: () => ({
+    meta: [
+      { title: "Guided Prompts — For Once" },
+      {
+        name: "description",
+        content:
+          "Gentle ways to start when you don't know how. Soft, never-forced prompts to help you put words to what you feel.",
+      },
+    ],
+  }),
   component: Prompts,
 });
 

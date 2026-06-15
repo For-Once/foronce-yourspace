@@ -10,7 +10,16 @@ import { useLocalStorage, uid } from "@/lib/use-local-storage";
 import { affirm } from "@/lib/affirm";
 
 export const Route = createFileRoute("/_app/good-stuff")({
-  head: () => ({ meta: [{ title: "The Good Stuff — For Once" }] }),
+  head: () => ({
+    meta: [
+      { title: "The Good Stuff — For Once" },
+      {
+        name: "description",
+        content:
+          "A space just for joy. Keep a gratitude wall and a good-day jar so you remember the moments worth holding onto.",
+      },
+    ],
+  }),
   component: GoodStuff,
 });
 

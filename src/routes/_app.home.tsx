@@ -15,8 +15,19 @@ import { INBETWEEN_PHRASES, randomFrom } from "@/lib/copy";
 import { useEffect, useMemo, useState } from "react";
 
 export const Route = createFileRoute("/_app/home")({
+  head: () => ({
+    meta: [
+      { title: "Your Home — For Once" },
+      {
+        name: "description",
+        content:
+          "Your calm starting point. Choose where to go — vent, journal privately, celebrate the good stuff, or find gentle support.",
+      },
+    ],
+  }),
   component: HomePage,
 });
+
 
 const SPACES = [
   {
@@ -92,6 +103,7 @@ function HomePage() {
       <header className="mb-10">
         <p className="text-sm text-muted-foreground">{mounted ? greeting : "hello"},</p>
         <h1 className="font-hand text-5xl font-bold text-cream lg:text-6xl">
+          <span className="sr-only">Welcome to your For Once home, </span>
           {profile?.username ?? "friend"}
         </h1>
         {mood && (

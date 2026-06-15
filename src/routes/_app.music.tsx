@@ -9,7 +9,16 @@ import { useLocalStorage, uid } from "@/lib/use-local-storage";
 import { affirm } from "@/lib/affirm";
 
 export const Route = createFileRoute("/_app/music")({
-  head: () => ({ meta: [{ title: "Music — For Once" }] }),
+  head: () => ({
+    meta: [
+      { title: "Music — For Once" },
+      {
+        name: "description",
+        content:
+          "Playlists sorted by feelings, not genres. Find music for whatever mood you're in right now.",
+      },
+    ],
+  }),
   component: MusicPage,
 });
 
