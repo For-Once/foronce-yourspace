@@ -13,7 +13,7 @@ import {
 import { useProfile } from "@/lib/profile";
 import { getMood, moodColorStyle } from "@/lib/moods";
 import { INBETWEEN_PHRASES, randomFrom } from "@/lib/copy";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export const Route = createFileRoute("/_app/home")({
   component: HomePage,
