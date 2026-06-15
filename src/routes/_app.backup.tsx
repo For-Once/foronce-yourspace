@@ -13,7 +13,16 @@ import {
 } from "@/lib/backup";
 
 export const Route = createFileRoute("/_app/backup")({
-  head: () => ({ meta: [{ title: "Backup & Restore — For Once" }] }),
+  head: () => ({
+    meta: [
+      { title: "Backup & Restore — For Once" },
+      {
+        name: "description",
+        content:
+          "Make an encrypted backup of your private space, or restore it on another device. Only your passphrase can open it.",
+      },
+    ],
+  }),
   component: Backup,
 });
 

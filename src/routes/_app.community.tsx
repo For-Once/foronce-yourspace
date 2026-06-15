@@ -9,7 +9,16 @@ import { MOODS, getMood, moodColorStyle } from "@/lib/moods";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_app/community")({
-  head: () => ({ meta: [{ title: "Community — For Once" }] }),
+  head: () => ({
+    meta: [
+      { title: "Community — For Once" },
+      {
+        name: "description",
+        content:
+          "Hold each other and share good things anonymously. A gentle, heart-only community for everything you feel.",
+      },
+    ],
+  }),
   component: Community,
 });
 

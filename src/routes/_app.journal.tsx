@@ -13,7 +13,16 @@ import { getMood, moodColorStyle } from "@/lib/moods";
 import { affirm } from "@/lib/affirm";
 
 export const Route = createFileRoute("/_app/journal")({
-  head: () => ({ meta: [{ title: "Private Space — For Once" }] }),
+  head: () => ({
+    meta: [
+      { title: "Private Space — For Once" },
+      {
+        name: "description",
+        content:
+          "A fully private journal only you will ever see. Write entries, unsent letters, and memories — stored on your device.",
+      },
+    ],
+  }),
   component: Journal,
 });
 

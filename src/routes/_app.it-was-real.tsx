@@ -10,7 +10,16 @@ import { useLocalStorage, uid } from "@/lib/use-local-storage";
 import { affirm } from "@/lib/affirm";
 
 export const Route = createFileRoute("/_app/it-was-real")({
-  head: () => ({ meta: [{ title: "It Was Real — For Once" }] }),
+  head: () => ({
+    meta: [
+      { title: "It Was Real — For Once" },
+      {
+        name: "description",
+        content:
+          "For everything you felt that was never returned. Write unsent letters and let the feelings that mattered be real.",
+      },
+    ],
+  }),
   component: ItWasReal,
 });
 
