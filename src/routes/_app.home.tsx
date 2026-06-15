@@ -98,7 +98,7 @@ function HomePage() {
   return (
     <div>
       <header className="mb-10">
-        <p className="text-sm text-muted-foreground">{greeting},</p>
+        <p className="text-sm text-muted-foreground">{mounted ? greeting : "hello"},</p>
         <h1 className="font-hand text-5xl font-bold text-cream lg:text-6xl">
           {profile?.username ?? "friend"}
         </h1>
@@ -107,7 +107,7 @@ function HomePage() {
             <span className={moodColorStyle[mood.color].text}>feeling {mood.label} today</span>
           </div>
         )}
-        <p className="mt-5 font-hand text-3xl text-turquoise/90">{phrase}</p>
+        <p className="mt-5 font-hand text-3xl text-turquoise/90">{mounted ? phrase : "\u00a0"}</p>
       </header>
 
       <div className="grid gap-3 sm:grid-cols-2">
