@@ -10,6 +10,7 @@ import {
   MessageCircleHeart,
   HeartHandshake,
   LifeBuoy,
+  ShieldCheck,
 } from "lucide-react";
 import { MandalaBackground } from "./MandalaBackground";
 import { CrisisButton } from "./CrisisButton";
