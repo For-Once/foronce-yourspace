@@ -13,7 +13,7 @@ import {
 import { useProfile } from "@/lib/profile";
 import { getMood, moodColorStyle } from "@/lib/moods";
 import { INBETWEEN_PHRASES, randomFrom } from "@/lib/copy";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export const Route = createFileRoute("/_app/home")({
   component: HomePage,
@@ -81,6 +81,8 @@ const SPACES = [
 function HomePage() {
   const { profile } = useProfile();
   const mood = profile?.todayMood ? getMood(profile.todayMood) : undefined;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const phrase = useMemo(() => randomFrom(INBETWEEN_PHRASES), []);
 
   const hour = new Date().getHours();
@@ -96,7 +98,7 @@ function HomePage() {
   return (
     <div>
       <header className="mb-10">
-        <p className="text-sm text-muted-foreground">{greeting},</p>
+        <p className="text-sm text-muted-foreground">{mounted ? greeting : "hello"},</p>
         <h1 className="font-hand text-5xl font-bold text-cream lg:text-6xl">
           {profile?.username ?? "friend"}
         </h1>
@@ -105,7 +107,7 @@ function HomePage() {
             <span className={moodColorStyle[mood.color].text}>feeling {mood.label} today</span>
           </div>
         )}
-        <p className="mt-5 font-hand text-3xl text-turquoise/90">{phrase}</p>
+        <p className="mt-5 font-hand text-3xl text-turquoise/90">{mounted ? phrase : "\u00a0"}</p>
       </header>
 
       <div className="grid gap-3 sm:grid-cols-2">

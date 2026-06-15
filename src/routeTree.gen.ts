@@ -22,6 +22,7 @@ import { Route as AppHomeRouteImport } from './routes/_app.home'
 import { Route as AppGoodStuffRouteImport } from './routes/_app.good-stuff'
 import { Route as AppCopingRouteImport } from './routes/_app.coping'
 import { Route as AppCommunityRouteImport } from './routes/_app.community'
+import { Route as AppBackupRouteImport } from './routes/_app.backup'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -87,11 +88,17 @@ const AppCommunityRoute = AppCommunityRouteImport.update({
   path: '/community',
   getParentRoute: () => AppRoute,
 } as any)
+const AppBackupRoute = AppBackupRouteImport.update({
+  id: '/backup',
+  path: '/backup',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/onboarding': typeof OnboardingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/backup': typeof AppBackupRoute
   '/community': typeof AppCommunityRoute
   '/coping': typeof AppCopingRoute
   '/good-stuff': typeof AppGoodStuffRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/onboarding': typeof OnboardingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/backup': typeof AppBackupRoute
   '/community': typeof AppCommunityRoute
   '/coping': typeof AppCopingRoute
   '/good-stuff': typeof AppGoodStuffRoute
@@ -122,6 +130,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_app/backup': typeof AppBackupRoute
   '/_app/community': typeof AppCommunityRoute
   '/_app/coping': typeof AppCopingRoute
   '/_app/good-stuff': typeof AppGoodStuffRoute
@@ -138,6 +147,7 @@ export interface FileRouteTypes {
     | '/'
     | '/onboarding'
     | '/sitemap.xml'
+    | '/backup'
     | '/community'
     | '/coping'
     | '/good-stuff'
@@ -152,6 +162,7 @@ export interface FileRouteTypes {
     | '/'
     | '/onboarding'
     | '/sitemap.xml'
+    | '/backup'
     | '/community'
     | '/coping'
     | '/good-stuff'
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
     | '/_app'
     | '/onboarding'
     | '/sitemap.xml'
+    | '/_app/backup'
     | '/_app/community'
     | '/_app/coping'
     | '/_app/good-stuff'
@@ -278,10 +290,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCommunityRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/backup': {
+      id: '/_app/backup'
+      path: '/backup'
+      fullPath: '/backup'
+      preLoaderRoute: typeof AppBackupRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppBackupRoute: typeof AppBackupRoute
   AppCommunityRoute: typeof AppCommunityRoute
   AppCopingRoute: typeof AppCopingRoute
   AppGoodStuffRoute: typeof AppGoodStuffRoute
@@ -294,6 +314,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppBackupRoute: AppBackupRoute,
   AppCommunityRoute: AppCommunityRoute,
   AppCopingRoute: AppCopingRoute,
   AppGoodStuffRoute: AppGoodStuffRoute,
