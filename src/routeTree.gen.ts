@@ -9,38 +9,205 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppYourSpaceRouteImport } from './routes/_app.your-space'
+import { Route as AppPromptsRouteImport } from './routes/_app.prompts'
+import { Route as AppMusicRouteImport } from './routes/_app.music'
+import { Route as AppJournalRouteImport } from './routes/_app.journal'
+import { Route as AppItWasRealRouteImport } from './routes/_app.it-was-real'
+import { Route as AppHomeRouteImport } from './routes/_app.home'
+import { Route as AppGoodStuffRouteImport } from './routes/_app.good-stuff'
+import { Route as AppCopingRouteImport } from './routes/_app.coping'
+import { Route as AppCommunityRouteImport } from './routes/_app.community'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppYourSpaceRoute = AppYourSpaceRouteImport.update({
+  id: '/your-space',
+  path: '/your-space',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPromptsRoute = AppPromptsRouteImport.update({
+  id: '/prompts',
+  path: '/prompts',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMusicRoute = AppMusicRouteImport.update({
+  id: '/music',
+  path: '/music',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJournalRoute = AppJournalRouteImport.update({
+  id: '/journal',
+  path: '/journal',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppItWasRealRoute = AppItWasRealRouteImport.update({
+  id: '/it-was-real',
+  path: '/it-was-real',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHomeRoute = AppHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppGoodStuffRoute = AppGoodStuffRouteImport.update({
+  id: '/good-stuff',
+  path: '/good-stuff',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCopingRoute = AppCopingRouteImport.update({
+  id: '/coping',
+  path: '/coping',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCommunityRoute = AppCommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/onboarding': typeof OnboardingRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/community': typeof AppCommunityRoute
+  '/coping': typeof AppCopingRoute
+  '/good-stuff': typeof AppGoodStuffRoute
+  '/home': typeof AppHomeRoute
+  '/it-was-real': typeof AppItWasRealRoute
+  '/journal': typeof AppJournalRoute
+  '/music': typeof AppMusicRoute
+  '/prompts': typeof AppPromptsRoute
+  '/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/onboarding': typeof OnboardingRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/community': typeof AppCommunityRoute
+  '/coping': typeof AppCopingRoute
+  '/good-stuff': typeof AppGoodStuffRoute
+  '/home': typeof AppHomeRoute
+  '/it-was-real': typeof AppItWasRealRoute
+  '/journal': typeof AppJournalRoute
+  '/music': typeof AppMusicRoute
+  '/prompts': typeof AppPromptsRoute
+  '/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/onboarding': typeof OnboardingRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_app/community': typeof AppCommunityRoute
+  '/_app/coping': typeof AppCopingRoute
+  '/_app/good-stuff': typeof AppGoodStuffRoute
+  '/_app/home': typeof AppHomeRoute
+  '/_app/it-was-real': typeof AppItWasRealRoute
+  '/_app/journal': typeof AppJournalRoute
+  '/_app/music': typeof AppMusicRoute
+  '/_app/prompts': typeof AppPromptsRoute
+  '/_app/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/onboarding'
+    | '/sitemap.xml'
+    | '/community'
+    | '/coping'
+    | '/good-stuff'
+    | '/home'
+    | '/it-was-real'
+    | '/journal'
+    | '/music'
+    | '/prompts'
+    | '/your-space'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/onboarding'
+    | '/sitemap.xml'
+    | '/community'
+    | '/coping'
+    | '/good-stuff'
+    | '/home'
+    | '/it-was-real'
+    | '/journal'
+    | '/music'
+    | '/prompts'
+    | '/your-space'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/onboarding'
+    | '/sitemap.xml'
+    | '/_app/community'
+    | '/_app/coping'
+    | '/_app/good-stuff'
+    | '/_app/home'
+    | '/_app/it-was-real'
+    | '/_app/journal'
+    | '/_app/music'
+    | '/_app/prompts'
+    | '/_app/your-space'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  OnboardingRoute: typeof OnboardingRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +215,104 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/your-space': {
+      id: '/_app/your-space'
+      path: '/your-space'
+      fullPath: '/your-space'
+      preLoaderRoute: typeof AppYourSpaceRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/prompts': {
+      id: '/_app/prompts'
+      path: '/prompts'
+      fullPath: '/prompts'
+      preLoaderRoute: typeof AppPromptsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/music': {
+      id: '/_app/music'
+      path: '/music'
+      fullPath: '/music'
+      preLoaderRoute: typeof AppMusicRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/journal': {
+      id: '/_app/journal'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof AppJournalRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/it-was-real': {
+      id: '/_app/it-was-real'
+      path: '/it-was-real'
+      fullPath: '/it-was-real'
+      preLoaderRoute: typeof AppItWasRealRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/home': {
+      id: '/_app/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AppHomeRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/good-stuff': {
+      id: '/_app/good-stuff'
+      path: '/good-stuff'
+      fullPath: '/good-stuff'
+      preLoaderRoute: typeof AppGoodStuffRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/coping': {
+      id: '/_app/coping'
+      path: '/coping'
+      fullPath: '/coping'
+      preLoaderRoute: typeof AppCopingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/community': {
+      id: '/_app/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof AppCommunityRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppCommunityRoute: typeof AppCommunityRoute
+  AppCopingRoute: typeof AppCopingRoute
+  AppGoodStuffRoute: typeof AppGoodStuffRoute
+  AppHomeRoute: typeof AppHomeRoute
+  AppItWasRealRoute: typeof AppItWasRealRoute
+  AppJournalRoute: typeof AppJournalRoute
+  AppMusicRoute: typeof AppMusicRoute
+  AppPromptsRoute: typeof AppPromptsRoute
+  AppYourSpaceRoute: typeof AppYourSpaceRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppCommunityRoute: AppCommunityRoute,
+  AppCopingRoute: AppCopingRoute,
+  AppGoodStuffRoute: AppGoodStuffRoute,
+  AppHomeRoute: AppHomeRoute,
+  AppItWasRealRoute: AppItWasRealRoute,
+  AppJournalRoute: AppJournalRoute,
+  AppMusicRoute: AppMusicRoute,
+  AppPromptsRoute: AppPromptsRoute,
+  AppYourSpaceRoute: AppYourSpaceRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  OnboardingRoute: OnboardingRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
