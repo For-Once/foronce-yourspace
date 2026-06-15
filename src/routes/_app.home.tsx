@@ -69,13 +69,6 @@ const SPACES = [
     icon: HeartHandshake,
     color: "text-rose",
   },
-  {
-    to: "/coping",
-    label: "When It's Hard",
-    desc: "When what you feel is too big for right now.",
-    icon: LifeBuoy,
-    color: "text-peach",
-  },
 ] as const;
 
 function HomePage() {
