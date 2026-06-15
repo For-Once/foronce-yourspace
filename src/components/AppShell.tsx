@@ -9,11 +9,9 @@ import {
   Sparkles,
   MessageCircleHeart,
   HeartHandshake,
-  LifeBuoy,
   ShieldCheck,
 } from "lucide-react";
 import { MandalaBackground } from "./MandalaBackground";
-import { CrisisButton } from "./CrisisButton";
 import { Toaster } from "./ui/sonner";
 import { cn } from "@/lib/utils";
 
@@ -33,7 +31,6 @@ const NAV: NavItem[] = [
   { to: "/good-stuff", label: "Good Stuff", icon: Sparkles, primary: true },
   { to: "/prompts", label: "Guided Prompts", icon: MessageCircleHeart },
   { to: "/it-was-real", label: "It Was Real", icon: HeartHandshake },
-  { to: "/coping", label: "When It's Hard", icon: LifeBuoy },
   { to: "/backup", label: "Backup & Restore", icon: ShieldCheck },
 ];
 
@@ -74,15 +71,9 @@ export function AppShell({ children }: { children: ReactNode }) {
             <NavLink key={item.to} item={item} />
           ))}
         </nav>
-        <div className="p-4">
-          <CrisisButton className="w-full justify-center" />
-        </div>
       </aside>
 
-      {/* Floating crisis button on mobile */}
-      <div className="fixed right-4 top-4 z-40 lg:hidden">
-        <CrisisButton />
-      </div>
+
 
       {/* Main content */}
       <main className="lg:pl-60">

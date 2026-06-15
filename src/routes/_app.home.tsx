@@ -7,7 +7,6 @@ import {
   Sparkles,
   MessageCircleHeart,
   HeartHandshake,
-  LifeBuoy,
   ArrowRight,
 } from "lucide-react";
 import { useProfile } from "@/lib/profile";
@@ -68,13 +67,6 @@ const SPACES = [
     desc: "For everything you felt that was never returned.",
     icon: HeartHandshake,
     color: "text-rose",
-  },
-  {
-    to: "/coping",
-    label: "When It's Hard",
-    desc: "When what you feel is too big for right now.",
-    icon: LifeBuoy,
-    color: "text-peach",
   },
 ] as const;
 

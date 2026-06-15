@@ -3,7 +3,6 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Cloud, CloudRain, Sun, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MandalaBackground } from "@/components/MandalaBackground";
-import { CrisisButton } from "@/components/CrisisButton";
 import { useProfile } from "@/lib/profile";
 
 export const Route = createFileRoute("/")({
@@ -53,9 +52,7 @@ function Landing() {
     <div className="relative min-h-screen overflow-hidden">
       <MandalaBackground />
 
-      <div className="fixed right-4 top-4 z-40">
-        <CrisisButton />
-      </div>
+
 
       {/* floating particles */}
       <div className="pointer-events-none absolute inset-0 -z-0" aria-hidden>
