@@ -71,15 +71,9 @@ export function AppShell({ children }: { children: ReactNode }) {
             <NavLink key={item.to} item={item} />
           ))}
         </nav>
-        <div className="p-4">
-          <CrisisButton className="w-full justify-center" />
-        </div>
       </aside>
 
-      {/* Floating crisis button on mobile */}
-      <div className="fixed right-4 top-4 z-40 lg:hidden">
-        <CrisisButton />
-      </div>
+
 
       {/* Main content */}
       <main className="lg:pl-60">
