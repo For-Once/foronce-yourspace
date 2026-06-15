@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 
-const BASE_URL = "";
+const BASE_URL = "https://foronce-yourspace.lovable.app";
 
-const paths = ["/", "/onboarding", "/home", "/your-space", "/journal", "/good-stuff", "/community", "/music", "/prompts", "/it-was-real"];
+const paths = ["/", "/onboarding", "/home", "/your-space", "/journal", "/good-stuff", "/community", "/music", "/prompts", "/it-was-real", "/backup"];
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
