@@ -10,6 +10,8 @@ import {
   MessageCircleHeart,
   HeartHandshake,
   ShieldCheck,
+  HelpCircle,
+  Store,
 } from "lucide-react";
 import { MandalaBackground } from "./MandalaBackground";
 import { Toaster } from "./ui/sonner";
@@ -31,6 +33,8 @@ const NAV: NavItem[] = [
   { to: "/good-stuff", label: "Good Stuff", icon: Sparkles, primary: true },
   { to: "/prompts", label: "Guided Prompts", icon: MessageCircleHeart },
   { to: "/it-was-real", label: "It Was Real", icon: HeartHandshake },
+  { to: "/store", label: "Store", icon: Store },
+  { to: "/faq", label: "FAQ", icon: HelpCircle },
   { to: "/backup", label: "Backup & Restore", icon: ShieldCheck },
 ];
 

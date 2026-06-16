@@ -14,12 +14,14 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppYourSpaceRouteImport } from './routes/_app.your-space'
+import { Route as AppStoreRouteImport } from './routes/_app.store'
 import { Route as AppPromptsRouteImport } from './routes/_app.prompts'
 import { Route as AppMusicRouteImport } from './routes/_app.music'
 import { Route as AppJournalRouteImport } from './routes/_app.journal'
 import { Route as AppItWasRealRouteImport } from './routes/_app.it-was-real'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
 import { Route as AppGoodStuffRouteImport } from './routes/_app.good-stuff'
+import { Route as AppFaqRouteImport } from './routes/_app.faq'
 import { Route as AppCommunityRouteImport } from './routes/_app.community'
 import { Route as AppBackupRouteImport } from './routes/_app.backup'
 
@@ -45,6 +47,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppYourSpaceRoute = AppYourSpaceRouteImport.update({
   id: '/your-space',
   path: '/your-space',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppStoreRoute = AppStoreRouteImport.update({
+  id: '/store',
+  path: '/store',
   getParentRoute: () => AppRoute,
 } as any)
 const AppPromptsRoute = AppPromptsRouteImport.update({
@@ -77,6 +84,11 @@ const AppGoodStuffRoute = AppGoodStuffRouteImport.update({
   path: '/good-stuff',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFaqRoute = AppFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCommunityRoute = AppCommunityRouteImport.update({
   id: '/community',
   path: '/community',
@@ -94,12 +106,14 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/backup': typeof AppBackupRoute
   '/community': typeof AppCommunityRoute
+  '/faq': typeof AppFaqRoute
   '/good-stuff': typeof AppGoodStuffRoute
   '/home': typeof AppHomeRoute
   '/it-was-real': typeof AppItWasRealRoute
   '/journal': typeof AppJournalRoute
   '/music': typeof AppMusicRoute
   '/prompts': typeof AppPromptsRoute
+  '/store': typeof AppStoreRoute
   '/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRoutesByTo {
@@ -108,12 +122,14 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/backup': typeof AppBackupRoute
   '/community': typeof AppCommunityRoute
+  '/faq': typeof AppFaqRoute
   '/good-stuff': typeof AppGoodStuffRoute
   '/home': typeof AppHomeRoute
   '/it-was-real': typeof AppItWasRealRoute
   '/journal': typeof AppJournalRoute
   '/music': typeof AppMusicRoute
   '/prompts': typeof AppPromptsRoute
+  '/store': typeof AppStoreRoute
   '/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRoutesById {
@@ -124,12 +140,14 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_app/backup': typeof AppBackupRoute
   '/_app/community': typeof AppCommunityRoute
+  '/_app/faq': typeof AppFaqRoute
   '/_app/good-stuff': typeof AppGoodStuffRoute
   '/_app/home': typeof AppHomeRoute
   '/_app/it-was-real': typeof AppItWasRealRoute
   '/_app/journal': typeof AppJournalRoute
   '/_app/music': typeof AppMusicRoute
   '/_app/prompts': typeof AppPromptsRoute
+  '/_app/store': typeof AppStoreRoute
   '/_app/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRouteTypes {
@@ -140,12 +158,14 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/backup'
     | '/community'
+    | '/faq'
     | '/good-stuff'
     | '/home'
     | '/it-was-real'
     | '/journal'
     | '/music'
     | '/prompts'
+    | '/store'
     | '/your-space'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -154,12 +174,14 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/backup'
     | '/community'
+    | '/faq'
     | '/good-stuff'
     | '/home'
     | '/it-was-real'
     | '/journal'
     | '/music'
     | '/prompts'
+    | '/store'
     | '/your-space'
   id:
     | '__root__'
@@ -169,12 +191,14 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/_app/backup'
     | '/_app/community'
+    | '/_app/faq'
     | '/_app/good-stuff'
     | '/_app/home'
     | '/_app/it-was-real'
     | '/_app/journal'
     | '/_app/music'
     | '/_app/prompts'
+    | '/_app/store'
     | '/_app/your-space'
   fileRoutesById: FileRoutesById
 }
@@ -222,6 +246,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppYourSpaceRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/store': {
+      id: '/_app/store'
+      path: '/store'
+      fullPath: '/store'
+      preLoaderRoute: typeof AppStoreRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/prompts': {
       id: '/_app/prompts'
       path: '/prompts'
@@ -264,6 +295,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppGoodStuffRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/faq': {
+      id: '/_app/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof AppFaqRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/community': {
       id: '/_app/community'
       path: '/community'
@@ -284,24 +322,28 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppBackupRoute: typeof AppBackupRoute
   AppCommunityRoute: typeof AppCommunityRoute
+  AppFaqRoute: typeof AppFaqRoute
   AppGoodStuffRoute: typeof AppGoodStuffRoute
   AppHomeRoute: typeof AppHomeRoute
   AppItWasRealRoute: typeof AppItWasRealRoute
   AppJournalRoute: typeof AppJournalRoute
   AppMusicRoute: typeof AppMusicRoute
   AppPromptsRoute: typeof AppPromptsRoute
+  AppStoreRoute: typeof AppStoreRoute
   AppYourSpaceRoute: typeof AppYourSpaceRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppBackupRoute: AppBackupRoute,
   AppCommunityRoute: AppCommunityRoute,
+  AppFaqRoute: AppFaqRoute,
   AppGoodStuffRoute: AppGoodStuffRoute,
   AppHomeRoute: AppHomeRoute,
   AppItWasRealRoute: AppItWasRealRoute,
   AppJournalRoute: AppJournalRoute,
   AppMusicRoute: AppMusicRoute,
   AppPromptsRoute: AppPromptsRoute,
+  AppStoreRoute: AppStoreRoute,
   AppYourSpaceRoute: AppYourSpaceRoute,
 }
 
