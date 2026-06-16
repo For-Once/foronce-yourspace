@@ -56,21 +56,6 @@ const PROMPTS = [
 ];
 
 // little cute companions you can press onto an entry
-const STICKERS = [
-  "🌙",
-  "⭐",
-  "🌸",
-  "🦋",
-  "🍃",
-  "☁️",
-  "🫧",
-  "💌",
-  "🕯️",
-  "🌷",
-  "🐚",
-  "�– ",
-].map((s) => s.trim());
-
 const ALL_STICKERS = [
   "🌙",
   "⭐",
