@@ -8,7 +8,10 @@ import {
   Mic,
   ImagePlus,
   X,
-  Sparkles,
+  Brush,
+  Smile,
+  Frown,
+  Meh,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +19,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PageHeader } from "@/components/PageHeader";
 import { MoodSelector } from "@/components/MoodSelector";
+import { StickerTray } from "@/components/StickerTray";
+import { DoodleCanvas, type DoodleCanvasHandle } from "@/components/DoodleCanvas";
+import { CameraCapture } from "@/components/CameraCapture";
 import { VoiceRecorder } from "./_app.your-space";
 import { useLocalStorage, uid } from "@/lib/use-local-storage";
 import { getMood, moodColorStyle } from "@/lib/moods";
@@ -28,7 +34,7 @@ export const Route = createFileRoute("/_app/journal")({
       {
         name: "description",
         content:
-          "A fully private journal only you will ever see. Write entries, add cute stickers and photos, write unsent letters, and keep memories — stored on your device.",
+          "A fully private journal only you will ever see. Write entries, doodle on a canvas, add searchable stickers and photos, capture moments with your camera, and keep memories — stored on your device.",
       },
     ],
   }),
@@ -39,10 +45,11 @@ interface Entry {
   id: string;
   text: string;
   mood?: string;
-  kind: "entry" | "letter" | "memory" | "your-space";
+  kind: "entry" | "letter" | "memory" | "your-space" | "canvas" | "moment";
   to?: string;
   stickers?: string[];
   image?: string;
+  feeling?: "happy" | "sad" | "neutral";
   createdAt: number;
 }
 
@@ -53,30 +60,6 @@ const PROMPTS = [
   "who made you feel seen recently?",
   "what are you quietly proud of?",
   "describe a perfect ordinary moment you had recently.",
-];
-
-// little cute companions you can press onto an entry
-const ALL_STICKERS = [
-  "🌙",
-  "⭐",
-  "🌸",
-  "🦋",
-  "🍃",
-  "☁️",
-  "🫧",
-  "💌",
-  "🕯️",
-  "🌷",
-  "🐚",
-  "🌊",
-  "🌻",
-  "🧸",
-  "🍓",
-  "🌈",
-  "✨",
-  "🩷",
-  "🐱",
-  "📷",
 ];
 
 function fmt(ts: number) {
@@ -139,12 +122,20 @@ function Journal() {
       <Tabs defaultValue="entries">
         <TabsList className="mb-6 flex h-auto w-full flex-wrap justify-start gap-1 bg-card/40 p-1">
           <TabsTrigger value="entries">Journal</TabsTrigger>
+          <TabsTrigger value="canvas">Doodle & Stickers</TabsTrigger>
+          <TabsTrigger value="gallery">Moments</TabsTrigger>
           <TabsTrigger value="letters">Unsent letters</TabsTrigger>
           <TabsTrigger value="memories">Memories</TabsTrigger>
         </TabsList>
 
         <TabsContent value="entries">
           <Composer entries={entries} setEntries={setEntries} kind="entry" />
+        </TabsContent>
+        <TabsContent value="canvas">
+          <CanvasStudio entries={entries} setEntries={setEntries} />
+        </TabsContent>
+        <TabsContent value="gallery">
+          <Gallery entries={entries} setEntries={setEntries} />
         </TabsContent>
         <TabsContent value="letters">
           <Composer entries={entries} setEntries={setEntries} kind="letter" />
@@ -317,31 +308,9 @@ function Composer({
           ))}
         </div>
 
-        {/* stickers */}
+        {/* searchable stickers */}
         <div className="mt-4">
-          <p className="mb-2 flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Sparkles className="h-3.5 w-3.5 text-gold" /> press on a sticker (optional)
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {ALL_STICKERS.map((s) => {
-              const active = stickers.includes(s);
-              return (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => toggleSticker(s)}
-                  aria-pressed={active}
-                  className={`grid h-9 w-9 place-items-center rounded-xl border text-lg transition-all hover:scale-110 ${
-                    active
-                      ? "border-gold/60 bg-gold/15 scale-110 shadow-sm"
-                      : "border-border bg-background/30"
-                  }`}
-                >
-                  {s}
-                </button>
-              );
-            })}
-          </div>
+          <StickerTray onPick={toggleSticker} selected={stickers} />
           {stickers.length > 0 && (
             <p className="mt-2 text-xs text-muted-foreground">
               on this entry: <span className="text-base">{stickers.join(" ")}</span>
@@ -383,56 +352,326 @@ function Composer({
           <p className="py-8 text-center text-sm text-muted-foreground">{config.empty}</p>
         ) : (
           <div className="space-y-3">
-            {list.map((e) => {
-              const m = e.mood ? getMood(e.mood) : undefined;
-              return (
-                <article
-                  key={e.id}
-                  className="group rounded-2xl border border-border bg-card/40 p-4"
+            {list.map((e) => (
+              <EntryCard key={e.id} entry={e} setEntries={setEntries} />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function EntryCard({
+  entry: e,
+  setEntries,
+}: {
+  entry: Entry;
+  setEntries: (fn: (prev: Entry[]) => Entry[]) => void;
+}) {
+  const m = e.mood ? getMood(e.mood) : undefined;
+  return (
+    <article className="group rounded-2xl border border-border bg-card/40 p-4">
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <span className="text-xs text-muted-foreground">
+          {e.to ? `to ${e.to} · ` : ""}
+          {fmt(e.createdAt)}
+        </span>
+        <div className="flex items-center gap-2">
+          {m && (
+            <span
+              className={`rounded-full px-2 py-0.5 text-xs capitalize ${moodColorStyle[m.color].bg} ${moodColorStyle[m.color].text}`}
+            >
+              {m.label}
+            </span>
+          )}
+          <button
+            onClick={() => setEntries((prev) => prev.filter((x) => x.id !== e.id))}
+            className="text-muted-foreground opacity-0 transition-opacity hover:text-rose group-hover:opacity-100"
+            aria-label="delete"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      </div>
+
+      {e.image && (
+        <img
+          src={e.image}
+          alt="a moment you kept"
+          className="mb-3 max-h-72 w-full rounded-xl border border-border object-cover"
+        />
+      )}
+
+      {e.text && (
+        <p className="whitespace-pre-wrap text-sm leading-relaxed text-cream/90">
+          {e.text}
+        </p>
+      )}
+
+      {e.stickers && e.stickers.length > 0 && (
+        <p className="mt-2 select-none text-xl">{e.stickers.join(" ")}</p>
+      )}
+    </article>
+  );
+}
+
+function CanvasStudio({
+  entries,
+  setEntries,
+}: {
+  entries: Entry[];
+  setEntries: (fn: (prev: Entry[]) => Entry[]) => void;
+}) {
+  const canvasRef = useRef<DoodleCanvasHandle>(null);
+  const [hasDrawing, setHasDrawing] = useState(false);
+  const [caption, setCaption] = useState("");
+  const [stickers, setStickers] = useState<string[]>([]);
+
+  const list = useMemo(
+    () => entries.filter((e) => e.kind === "canvas").sort((a, b) => b.createdAt - a.createdAt),
+    [entries],
+  );
+
+  const toggleSticker = (s: string) =>
+    setStickers((prev) =>
+      prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
+    );
+
+  const save = () => {
+    const hasArt = canvasRef.current?.hasDrawing();
+    if (!hasArt && !caption.trim() && stickers.length === 0) return;
+    const image = hasArt ? canvasRef.current?.toDataUrl() ?? undefined : undefined;
+    setEntries((prev) => [
+      {
+        id: uid(),
+        text: caption.trim(),
+        kind: "canvas",
+        stickers: stickers.length ? stickers : undefined,
+        image,
+        createdAt: Date.now(),
+      },
+      ...prev,
+    ]);
+    affirm("A little piece of you, saved. Only you can see it.");
+    setCaption("");
+    setStickers([]);
+    canvasRef.current?.clear();
+    setHasDrawing(false);
+  };
+
+  const canSave = hasDrawing || Boolean(caption.trim()) || stickers.length > 0;
+
+  return (
+    <div className="space-y-8">
+      <div className="rounded-2xl border border-border bg-card/40 p-4">
+        <p className="mb-3 flex items-center gap-2 text-sm text-muted-foreground">
+          <Brush className="h-4 w-4 text-turquoise" /> draw anything — scribble your mood, doodle a
+          flower, sketch your day.
+        </p>
+        <DoodleCanvas ref={canvasRef} onChange={setHasDrawing} />
+
+        <Textarea
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+          placeholder="a little caption for your doodle (optional)"
+          className="mt-4 min-h-20 resize-none border-border bg-background/30"
+        />
+
+        <div className="mt-4">
+          <StickerTray onPick={toggleSticker} selected={stickers} label="decorate with stickers (optional)" />
+          {stickers.length > 0 && (
+            <p className="mt-2 text-xs text-muted-foreground">
+              on this doodle: <span className="text-base">{stickers.join(" ")}</span>
+            </p>
+          )}
+        </div>
+
+        <Button variant="hero" size="lg" className="mt-4" disabled={!canSave} onClick={save}>
+          <Save className="h-4 w-4" /> save to my space
+        </Button>
+      </div>
+
+      {list.length > 0 && (
+        <div className="grid gap-3 sm:grid-cols-2">
+          {list.map((e) => (
+            <EntryCard key={e.id} entry={e} setEntries={setEntries} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+const FEELINGS: { key: "happy" | "sad" | "neutral"; label: string; icon: typeof Smile }[] = [
+  { key: "happy", label: "happy", icon: Smile },
+  { key: "neutral", label: "in between", icon: Meh },
+  { key: "sad", label: "sad", icon: Frown },
+];
+
+function Gallery({
+  entries,
+  setEntries,
+}: {
+  entries: Entry[];
+  setEntries: (fn: (prev: Entry[]) => Entry[]) => void;
+}) {
+  const [pending, setPending] = useState<string | undefined>();
+  const [feeling, setFeeling] = useState<"happy" | "sad" | "neutral">("happy");
+  const [caption, setCaption] = useState("");
+  const [filter, setFilter] = useState<"all" | "happy" | "sad" | "neutral">("all");
+
+  const list = useMemo(
+    () =>
+      entries
+        .filter((e) => e.kind === "moment")
+        .filter((e) => (filter === "all" ? true : e.feeling === filter))
+        .sort((a, b) => b.createdAt - a.createdAt),
+    [entries, filter],
+  );
+
+  const save = () => {
+    if (!pending) return;
+    setEntries((prev) => [
+      {
+        id: uid(),
+        text: caption.trim(),
+        kind: "moment",
+        image: pending,
+        feeling,
+        createdAt: Date.now(),
+      },
+      ...prev,
+    ]);
+    affirm(
+      feeling === "sad"
+        ? "This feeling is real too. Thank you for keeping it gently."
+        : "A moment worth holding onto. Saved just for you.",
+    );
+    setPending(undefined);
+    setCaption("");
+    setFeeling("happy");
+  };
+
+  return (
+    <div className="space-y-8">
+      <div className="rounded-2xl border border-border bg-card/40 p-4">
+        <p className="mb-3 text-sm text-muted-foreground">
+          take a picture of this moment — happy or sad — and keep it in your private gallery.
+        </p>
+
+        {pending ? (
+          <div className="space-y-4">
+            <div className="relative inline-block">
+              <img
+                src={pending}
+                alt="captured moment"
+                className="max-h-80 w-full rounded-xl border border-border object-cover"
+              />
+              <button
+                onClick={() => setPending(undefined)}
+                className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full bg-background/80 text-cream backdrop-blur transition-colors hover:bg-rose/70"
+                aria-label="discard photo"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div>
+              <p className="mb-2 text-sm text-muted-foreground">how does this moment feel?</p>
+              <div className="flex flex-wrap gap-2">
+                {FEELINGS.map((f) => {
+                  const Icon = f.icon;
+                  const active = feeling === f.key;
+                  return (
+                    <button
+                      key={f.key}
+                      onClick={() => setFeeling(f.key)}
+                      className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm capitalize transition-all ${
+                        active
+                          ? "bg-turquoise/15 text-turquoise ring-1 ring-inset ring-turquoise/50"
+                          : "border border-border bg-background/30 text-muted-foreground"
+                      }`}
+                    >
+                      <Icon className="h-4 w-4" /> {f.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <Textarea
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              placeholder="a few words about this moment (optional)"
+              className="min-h-20 resize-none border-border bg-background/30"
+            />
+
+            <Button variant="hero" size="lg" onClick={save}>
+              <Save className="h-4 w-4" /> keep this moment
+            </Button>
+          </div>
+        ) : (
+          <CameraCapture onCapture={setPending} />
+        )}
+      </div>
+
+      <div>
+        <div className="mb-4 flex flex-wrap gap-2">
+          {(["all", "happy", "neutral", "sad"] as const).map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`rounded-full px-3 py-1 text-xs capitalize transition-colors ${
+                filter === f
+                  ? "bg-turquoise/15 text-turquoise"
+                  : "text-muted-foreground hover:text-cream"
+              }`}
+            >
+              {f === "neutral" ? "in between" : f}
+            </button>
+          ))}
+        </div>
+
+        {list.length === 0 ? (
+          <p className="py-8 text-center text-sm text-muted-foreground">
+            your gallery is empty. capture a moment whenever one happens.
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {list.map((e) => (
+              <div
+                key={e.id}
+                className="group relative overflow-hidden rounded-2xl border border-border bg-card/40"
+              >
+                {e.image && (
+                  <img
+                    src={e.image}
+                    alt={e.text || "a kept moment"}
+                    className="aspect-square w-full object-cover"
+                  />
+                )}
+                <button
+                  onClick={() => setEntries((prev) => prev.filter((x) => x.id !== e.id))}
+                  className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-background/70 text-cream opacity-0 backdrop-blur transition-opacity hover:bg-rose/70 group-hover:opacity-100"
+                  aria-label="delete moment"
                 >
-                  <div className="mb-2 flex items-center justify-between gap-2">
-                    <span className="text-xs text-muted-foreground">
-                      {e.to ? `to ${e.to} · ` : ""}
-                      {fmt(e.createdAt)}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      {m && (
-                        <span
-                          className={`rounded-full px-2 py-0.5 text-xs capitalize ${moodColorStyle[m.color].bg} ${moodColorStyle[m.color].text}`}
-                        >
-                          {m.label}
-                        </span>
-                      )}
-                      <button
-                        onClick={() => setEntries((prev) => prev.filter((x) => x.id !== e.id))}
-                        className="text-muted-foreground opacity-0 transition-opacity hover:text-rose group-hover:opacity-100"
-                        aria-label="delete"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+                {(e.text || e.feeling) && (
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/90 to-transparent p-2">
+                    {e.feeling && (
+                      <span className="text-xs capitalize text-turquoise">
+                        {e.feeling === "neutral" ? "in between" : e.feeling}
+                      </span>
+                    )}
+                    {e.text && (
+                      <p className="line-clamp-2 text-xs text-cream/90">{e.text}</p>
+                    )}
                   </div>
-
-                  {e.image && (
-                    <img
-                      src={e.image}
-                      alt="a moment you kept"
-                      className="mb-3 max-h-72 w-full rounded-xl border border-border object-cover"
-                    />
-                  )}
-
-                  {e.text && (
-                    <p className="whitespace-pre-wrap text-sm leading-relaxed text-cream/90">
-                      {e.text}
-                    </p>
-                  )}
-
-                  {e.stickers && e.stickers.length > 0 && (
-                    <p className="mt-2 select-none text-xl">{e.stickers.join(" ")}</p>
-                  )}
-                </article>
-              );
-            })}
+                )}
+              </div>
+            ))}
           </div>
         )}
       </div>
