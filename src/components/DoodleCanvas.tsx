@@ -1,6 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { Eraser, RotateCcw } from "lucide-react";
 
+const BG = "#13131c";
 const COLORS = [
   "#f4ede4", // cream
   "#6fd6c8", // turquoise
@@ -9,25 +16,34 @@ const COLORS = [
   "#f3c969", // gold
   "#f0a868", // peach
   "#7aa2f7", // soft blue
-  "#1a1a24", // dark
 ];
 
 export interface DoodleCanvasHandle {
   toDataUrl: () => string | null;
-  isBlank: () => boolean;
+  hasDrawing: () => boolean;
   clear: () => void;
 }
 
-export function DoodleCanvas({
-  onChange,
-}: {
-  onChange?: (hasDrawing: boolean) => void;
-}) {
+export const DoodleCanvas = forwardRef<
+  DoodleCanvasHandle,
+  { onChange?: (hasDrawing: boolean) => void }
+>(function DoodleCanvas({ onChange }, ref) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const drawing = useRef(false);
   const dirty = useRef(false);
   const [color, setColor] = useState(COLORS[1]);
   const [size, setSize] = useState(4);
+
+  const fillBg = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d")!;
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.restore();
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -42,7 +58,15 @@ export function DoodleCanvas({
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
     }
+    fillBg();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useImperativeHandle(ref, () => ({
+    toDataUrl: () => canvasRef.current?.toDataURL("image/png") ?? null,
+    hasDrawing: () => dirty.current,
+    clear: () => clearCanvas(),
+  }));
 
   const pos = (e: React.PointerEvent) => {
     const rect = canvasRef.current!.getBoundingClientRect();
@@ -76,10 +100,8 @@ export function DoodleCanvas({
     drawing.current = false;
   };
 
-  const clear = () => {
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d")!;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const clearCanvas = () => {
+    fillBg();
     dirty.current = false;
     onChange?.(false);
   };
@@ -95,7 +117,7 @@ export function DoodleCanvas({
               onClick={() => setColor(c)}
               aria-label={`color ${c}`}
               className={`h-7 w-7 rounded-full border-2 transition-transform hover:scale-110 ${
-                color === c ? "border-cream scale-110" : "border-border"
+                color === c ? "scale-110 border-cream" : "border-border"
               }`}
               style={{ backgroundColor: c }}
             />
@@ -114,14 +136,14 @@ export function DoodleCanvas({
         </div>
         <button
           type="button"
-          onClick={() => setColor("#1a1a24")}
+          onClick={() => setColor(BG)}
           className="flex items-center gap-1.5 rounded-full border border-border bg-background/30 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-cream"
         >
           <Eraser className="h-3 w-3" /> eraser
         </button>
         <button
           type="button"
-          onClick={clear}
+          onClick={clearCanvas}
           className="flex items-center gap-1.5 rounded-full border border-border bg-background/30 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-rose"
         >
           <RotateCcw className="h-3 w-3" /> clear
@@ -133,14 +155,9 @@ export function DoodleCanvas({
         onPointerMove={move}
         onPointerUp={end}
         onPointerLeave={end}
-        className="h-72 w-full touch-none rounded-2xl border border-border bg-[#13131c]"
-        style={{ touchAction: "none" }}
+        className="h-72 w-full touch-none rounded-2xl border border-border"
+        style={{ touchAction: "none", backgroundColor: BG }}
       />
     </div>
   );
-}
-
-export function canvasToDataUrl(canvas: HTMLCanvasElement | null): string | null {
-  if (!canvas) return null;
-  return canvas.toDataURL("image/png");
-}
+});
