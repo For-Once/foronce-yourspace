@@ -75,11 +75,6 @@ const AppJournalRoute = AppJournalRouteImport.update({
   path: '/journal',
   getParentRoute: () => AppRoute,
 } as any)
-const AppMeditationRoute = AppMeditationRouteImport.update({
-  id: '/meditation',
-  path: '/meditation',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppItWasRealRoute = AppItWasRealRouteImport.update({
   id: '/it-was-real',
   path: '/it-was-real',
@@ -296,6 +291,13 @@ declare module '@tanstack/react-router' {
       path: '/journal'
       fullPath: '/journal'
       preLoaderRoute: typeof AppJournalRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/meditation': {
+      id: '/_app/meditation'
+      path: '/meditation'
+      fullPath: '/meditation'
+      preLoaderRoute: typeof AppMeditationRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/it-was-real': {
