@@ -293,13 +293,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppJournalRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/meditation': {
-      id: '/_app/meditation'
-      path: '/meditation'
-      fullPath: '/meditation'
-      preLoaderRoute: typeof AppMeditationRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/it-was-real': {
       id: '/_app/it-was-real'
       path: '/it-was-real'
