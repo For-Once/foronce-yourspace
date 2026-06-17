@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   HelpCircle,
   Store,
+  Flower2,
 } from "lucide-react";
 import { MandalaBackground } from "./MandalaBackground";
 import { Toaster } from "./ui/sonner";
