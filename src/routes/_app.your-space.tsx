@@ -42,6 +42,7 @@ interface CommunityPost {
 }
 
 function YourSpace() {
+  const { profile } = useProfile();
   const [text, setText] = useState("");
   const [mood, setMood] = useState<string>();
   const [placeholder, setPlaceholder] = useState(PLACEHOLDERS[0]);
