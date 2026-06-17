@@ -37,6 +37,7 @@ interface CommunityPost {
   mood?: string;
   hearts: number;
   feed: "support" | "good";
+  author?: string;
   createdAt: number;
 }
 
