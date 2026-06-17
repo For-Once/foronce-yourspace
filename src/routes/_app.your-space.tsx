@@ -81,6 +81,7 @@ function YourSpace() {
           mood,
           hearts: 0,
           feed: tone === "good" ? "good" : "support",
+          author: profile?.username ?? "anonymous",
           createdAt: Date.now(),
         },
         ...prev,
