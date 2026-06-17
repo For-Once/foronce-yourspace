@@ -8,7 +8,7 @@ import { PageHeader, Whisper } from "@/components/PageHeader";
 import { MoodSelector } from "@/components/MoodSelector";
 import { useLocalStorage, uid } from "@/lib/use-local-storage";
 import { useProfile } from "@/lib/profile";
-import { MOODS, getMood, moodColorStyle, getMoodTone } from "@/lib/moods";
+import { MOODS, getMood, moodColorStyle } from "@/lib/moods";
 import { affirm } from "@/lib/affirm";
 import { cn } from "@/lib/utils";
 
