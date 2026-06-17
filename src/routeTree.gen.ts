@@ -19,7 +19,6 @@ import { Route as AppPromptsRouteImport } from './routes/_app.prompts'
 import { Route as AppMusicRouteImport } from './routes/_app.music'
 import { Route as AppMeditationRouteImport } from './routes/_app.meditation'
 import { Route as AppJournalRouteImport } from './routes/_app.journal'
-import { Route as AppMeditationRouteImport } from './routes/_app.meditation'
 import { Route as AppItWasRealRouteImport } from './routes/_app.it-was-real'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
 import { Route as AppGoodStuffRouteImport } from './routes/_app.good-stuff'
@@ -74,6 +73,11 @@ const AppMeditationRoute = AppMeditationRouteImport.update({
 const AppJournalRoute = AppJournalRouteImport.update({
   id: '/journal',
   path: '/journal',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMeditationRoute = AppMeditationRouteImport.update({
+  id: '/meditation',
+  path: '/meditation',
   getParentRoute: () => AppRoute,
 } as any)
 const AppItWasRealRoute = AppItWasRealRouteImport.update({
