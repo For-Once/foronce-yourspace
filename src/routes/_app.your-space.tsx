@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { PageHeader } from "@/components/PageHeader";
 import { MoodSelector } from "@/components/MoodSelector";
 import { useLocalStorage, uid } from "@/lib/use-local-storage";
+import { useProfile } from "@/lib/profile";
 import { getMood } from "@/lib/moods";
 import { affirm } from "@/lib/affirm";
 import { cn } from "@/lib/utils";
@@ -36,10 +37,12 @@ interface CommunityPost {
   mood?: string;
   hearts: number;
   feed: "support" | "good";
+  author?: string;
   createdAt: number;
 }
 
 function YourSpace() {
+  const { profile } = useProfile();
   const [text, setText] = useState("");
   const [mood, setMood] = useState<string>();
   const [placeholder, setPlaceholder] = useState(PLACEHOLDERS[0]);
@@ -78,6 +81,7 @@ function YourSpace() {
           mood,
           hearts: 0,
           feed: tone === "good" ? "good" : "support",
+          author: profile?.username ?? "anonymous",
           createdAt: Date.now(),
         },
         ...prev,

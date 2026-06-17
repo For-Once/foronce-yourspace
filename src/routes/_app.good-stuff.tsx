@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { PartyPopper, Coffee, Sun, Send, Sparkles } from "lucide-react";
+import { PartyPopper, Coffee, Sun, Send, Sparkles, PenLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -30,20 +30,12 @@ interface GoodPost {
 }
 
 const HAPPY_PROMPTS = [
-  "Write this one down — future you will want to remember it.",
   "What made you smile today, even quietly?",
   "Who made you feel loved recently?",
   "What are you proud of yourself for this week?",
   "What's something good coming that you're looking forward to?",
   "Describe a perfect ordinary moment you had recently.",
-];
-
-const SEED_GRATITUDE = [
-  "the coffee was perfect this morning",
-  "someone held the door for me",
-  "I laughed today, really laughed",
-  "the sky was a ridiculous pink at 6pm",
-  "my favorite song came on randomly",
+  "What's a small comfort that always works for you?",
 ];
 
 function GoodStuff() {
@@ -118,10 +110,6 @@ function Celebrate() {
 function Gratitude() {
   const [text, setText] = useState("");
   const [posts, setPosts] = useLocalStorage<GoodPost[]>("foronce.gratitude", []);
-  const all = [
-    ...posts,
-    ...SEED_GRATITUDE.map((t, i) => ({ id: `seed${i}`, text: t, createdAt: 0 })),
-  ];
 
   const post = () => {
     if (!text.trim()) return;
@@ -132,7 +120,7 @@ function Gratitude() {
 
   return (
     <div className="space-y-6">
-      <Whisper>Small things only. The cozy, ordinary, almost-missed moments.</Whisper>
+      <Whisper>Small things only. The cozy, ordinary, almost-missed moments — all your own.</Whisper>
       <div className="flex gap-2">
         <Input
           value={text}
@@ -145,17 +133,23 @@ function Gratitude() {
           <Send className="h-4 w-4" />
         </Button>
       </div>
-      <div className="columns-1 gap-3 sm:columns-2">
-        {all.map((p) => (
-          <div
-            key={p.id}
-            className="mb-3 break-inside-avoid rounded-2xl border border-peach/20 bg-peach/5 p-4"
-          >
-            <Coffee className="mb-2 h-4 w-4 text-peach" />
-            <p className="text-sm leading-relaxed text-cream/90">{p.text}</p>
-          </div>
-        ))}
-      </div>
+      {posts.length === 0 ? (
+        <p className="py-6 text-center text-sm text-muted-foreground">
+          your gratitude wall is empty. add the first small thing you're thankful for.
+        </p>
+      ) : (
+        <div className="columns-1 gap-3 sm:columns-2">
+          {posts.map((p) => (
+            <div
+              key={p.id}
+              className="mb-3 break-inside-avoid rounded-2xl border border-peach/20 bg-peach/5 p-4"
+            >
+              <Coffee className="mb-2 h-4 w-4 text-peach" />
+              <p className="text-sm leading-relaxed text-cream/90">{p.text}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -216,16 +210,60 @@ function GoodDayJar() {
   );
 }
 
+// Happy Prompts are now interactive — pick one, answer it, and it's saved
+// straight into your Good Day Jar so it actually sticks around.
 function HappyPrompts() {
+  const [active, setActive] = useState<string | null>(null);
+  const [answer, setAnswer] = useState("");
+  const [, setJar] = useLocalStorage<GoodPost[]>("foronce.jar", []);
+
+  const open = (p: string) => {
+    setActive(p);
+    setAnswer("");
+  };
+
+  const save = () => {
+    if (!active || !answer.trim()) return;
+    setJar((prev) => [
+      { id: uid(), text: `${active}\n— ${answer.trim()}`, createdAt: Date.now() },
+      ...prev,
+    ]);
+    affirm("Saved to your Good Day Jar. Future you will love finding this.");
+    setActive(null);
+    setAnswer("");
+  };
+
   return (
     <div className="space-y-3">
-      <Whisper>Gentle nudges for the good days. Pick one, or none.</Whisper>
+      <Whisper>Gentle nudges for the good days. Answer one and it's kept in your Good Day Jar.</Whisper>
       {HAPPY_PROMPTS.map((p) => (
-        <div
-          key={p}
-          className="rounded-2xl border border-border bg-card/40 p-5 text-lg text-cream/90"
-        >
-          {p}
+        <div key={p} className="rounded-2xl border border-border bg-card/40 p-5">
+          <button
+            onClick={() => open(active === p ? "" : p)}
+            className="flex w-full items-center justify-between gap-3 text-left text-lg text-cream/90"
+          >
+            <span>{p}</span>
+            <PenLine className="h-4 w-4 shrink-0 text-turquoise" />
+          </button>
+          {active === p && (
+            <div className="mt-4 space-y-3">
+              <Textarea
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                placeholder="write your answer..."
+                className="min-h-24 resize-none border-border bg-background/30"
+                autoFocus
+              />
+              <div className="flex gap-2">
+                <Button variant="hero" size="sm" disabled={!answer.trim()} onClick={save}>
+                  <Send className="h-4 w-4" /> keep it
+                </Button>
+                <Button variant="soft" size="sm" onClick={() => setActive(null)}>
+                  cancel
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       ))}
     </div>
