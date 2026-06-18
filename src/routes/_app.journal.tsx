@@ -266,10 +266,21 @@ function Composer({
     setImage(undefined);
   };
 
-  const canSave = Boolean(text.trim()) || Boolean(image) || stickers.length > 0;
+  const canSave = (Boolean(text.trim()) || Boolean(image) || stickers.length > 0) && !capped;
 
   return (
     <div className="space-y-8">
+      {kind === "entry" && !isPlus && (
+        <p className="text-xs text-muted-foreground">
+          {Math.min(basicCount, FREE_JOURNAL_LIMIT)} of {FREE_JOURNAL_LIMIT} free entries used
+        </p>
+      )}
+      {capped && (
+        <UpgradePrompt
+          title="You've written 20 entries"
+          message="That's something to be proud of. Want unlimited space to keep going? Plus removes the cap on entries and voice notes."
+        />
+      )}
       <div className="rounded-2xl border border-border bg-card/40 p-4">
         {kind === "letter" && (
           <Input
