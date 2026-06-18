@@ -12,6 +12,10 @@ import {
   Smile,
   Frown,
   Meh,
+  Mailbox,
+  Clock,
+  Lock,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,9 +26,12 @@ import { MoodSelector } from "@/components/MoodSelector";
 import { StickerTray } from "@/components/StickerTray";
 import { DoodleCanvas, type DoodleCanvasHandle } from "@/components/DoodleCanvas";
 import { CameraCapture } from "@/components/CameraCapture";
+import { UpgradePrompt, PlusLock } from "@/components/UpgradePrompt";
 import { VoiceRecorder } from "./_app.your-space";
 import { useLocalStorage, uid } from "@/lib/use-local-storage";
 import { getMood, moodColorStyle } from "@/lib/moods";
+import { usePlus, FREE_JOURNAL_LIMIT } from "@/lib/plus";
+import { useJournalTheme, themeStyle } from "@/lib/themes";
 import { affirm } from "@/lib/affirm";
 
 export const Route = createFileRoute("/_app/journal")({
@@ -100,17 +107,21 @@ async function fileToCompressedDataUrl(file: File, max = 900): Promise<string> {
 
 function Journal() {
   const [entries, setEntries] = useLocalStorage<Entry[]>("foronce.journal", []);
+  const { theme } = useJournalTheme();
 
   return (
-    <div>
+    <div
+      className="-mx-4 rounded-3xl px-4 py-2 transition-colors lg:-mx-10 lg:px-10"
+      style={themeStyle(theme)}
+    >
       <PageHeader
         title="Private Space"
         subtitle="Fully private. No one else will ever see this. Just you, the page, and a few cute friends."
       >
         <div className="mt-4 flex select-none gap-2 text-2xl" aria-hidden="true">
-          {["🌙", "⭐", "🌸", "🦋", "🫧"].map((s, i) => (
+          {theme.accents.concat(["🌙", "⭐", "🌸"]).slice(0, 5).map((s, i) => (
             <span
-              key={s}
+              key={`${s}-${i}`}
               className="inline-block animate-pulse"
               style={{ animationDelay: `${i * 0.4}s` }}
             >
@@ -122,6 +133,7 @@ function Journal() {
       <Tabs defaultValue="entries">
         <TabsList className="mb-6 flex h-auto w-full flex-wrap justify-start gap-1 bg-card/40 p-1">
           <TabsTrigger value="entries">Journal</TabsTrigger>
+          <TabsTrigger value="future">Letter to Future You</TabsTrigger>
           <TabsTrigger value="canvas">Doodle & Stickers</TabsTrigger>
           <TabsTrigger value="gallery">Moments</TabsTrigger>
           <TabsTrigger value="letters">Unsent letters</TabsTrigger>
@@ -130,6 +142,9 @@ function Journal() {
 
         <TabsContent value="entries">
           <Composer entries={entries} setEntries={setEntries} kind="entry" />
+        </TabsContent>
+        <TabsContent value="future">
+          <FutureLetters />
         </TabsContent>
         <TabsContent value="canvas">
           <CanvasStudio entries={entries} setEntries={setEntries} />
@@ -157,6 +172,7 @@ function Composer({
   setEntries: (fn: (prev: Entry[]) => Entry[]) => void;
   kind: "entry" | "letter" | "memory";
 }) {
+  const { isPlus } = usePlus();
   const [text, setText] = useState("");
   const [to, setTo] = useState("");
   const [mood, setMood] = useState<string>();
@@ -165,6 +181,13 @@ function Composer({
   const [image, setImage] = useState<string | undefined>();
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  // Free tier caps basic journal entries at 20 total.
+  const basicCount = useMemo(
+    () => entries.filter((e) => e.kind === "entry" || e.kind === "your-space").length,
+    [entries],
+  );
+  const capped = kind === "entry" && !isPlus && basicCount >= FREE_JOURNAL_LIMIT;
 
   const config = {
     entry: {
@@ -218,6 +241,7 @@ function Composer({
   };
 
   const save = () => {
+    if (capped) return;
     if (!text.trim() && !image && stickers.length === 0) return;
     setEntries((prev) => [
       {
@@ -242,10 +266,21 @@ function Composer({
     setImage(undefined);
   };
 
-  const canSave = Boolean(text.trim()) || Boolean(image) || stickers.length > 0;
+  const canSave = (Boolean(text.trim()) || Boolean(image) || stickers.length > 0) && !capped;
 
   return (
     <div className="space-y-8">
+      {kind === "entry" && !isPlus && (
+        <p className="text-xs text-muted-foreground">
+          {Math.min(basicCount, FREE_JOURNAL_LIMIT)} of {FREE_JOURNAL_LIMIT} free entries used
+        </p>
+      )}
+      {capped && (
+        <UpgradePrompt
+          title="You've written 20 entries"
+          message="That's something to be proud of. Want unlimited space to keep going? Plus removes the cap on entries and voice notes."
+        />
+      )}
       <div className="rounded-2xl border border-border bg-card/40 p-4">
         {kind === "letter" && (
           <Input
@@ -675,6 +710,208 @@ function Gallery({
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+// ---------- Letter to Future You (Plus) ----------
+
+interface FutureLetter {
+  id: string;
+  text: string;
+  createdAt: number;
+  deliverAt: number;
+  opened: boolean;
+}
+
+const DELIVERY_OPTIONS = [
+  { label: "in 1 month", months: 1 },
+  { label: "in 3 months", months: 3 },
+  { label: "in 6 months", months: 6 },
+];
+
+function monthsFromNow(months: number) {
+  const d = new Date();
+  d.setMonth(d.getMonth() + months);
+  return d.getTime();
+}
+
+function countdown(target: number) {
+  const ms = target - Date.now();
+  if (ms <= 0) return "arriving now";
+  const days = Math.ceil(ms / (24 * 60 * 60 * 1000));
+  if (days >= 30) return `${Math.round(days / 30)} month${days >= 60 ? "s" : ""} to go`;
+  if (days > 1) return `${days} days to go`;
+  return "tomorrow";
+}
+
+function FutureLetters() {
+  const { isPlus } = usePlus();
+
+  if (!isPlus) {
+    return (
+      <div className="space-y-4">
+        <PlusLock label="Write a letter to your future self with Plus">
+          <div className="grid h-72 place-items-center rounded-2xl bg-card/40">
+            <Mailbox className="h-12 w-12 text-muted-foreground" />
+          </div>
+        </PlusLock>
+        <p className="text-center text-sm text-muted-foreground">
+          Lock a journal entry and have it find you again in 1, 3, or 6 months.
+        </p>
+      </div>
+    );
+  }
+
+  return <FutureLettersInner />;
+}
+
+function FutureLettersInner() {
+  const [letters, setLetters] = useLocalStorage<FutureLetter[]>("foronce.futureletters", []);
+  const [text, setText] = useState("");
+  const [months, setMonths] = useState(3);
+  const [revealing, setRevealing] = useState<string | null>(null);
+
+  const now = Date.now();
+  const delivered = letters.filter((l) => l.deliverAt <= now && !l.opened).sort((a, b) => b.deliverAt - a.deliverAt);
+  const pending = letters.filter((l) => l.deliverAt > now).sort((a, b) => a.deliverAt - b.deliverAt);
+  const opened = letters.filter((l) => l.opened).sort((a, b) => b.deliverAt - a.deliverAt);
+
+  const send = () => {
+    if (!text.trim()) return;
+    setLetters((prev) => [
+      {
+        id: uid(),
+        text: text.trim(),
+        createdAt: Date.now(),
+        deliverAt: monthsFromNow(months),
+        opened: false,
+      },
+      ...prev,
+    ]);
+    affirm("Sealed. Your future self will be glad you wrote this.");
+    setText("");
+  };
+
+  const open = (l: FutureLetter) => {
+    setRevealing(l.id);
+    setTimeout(() => {
+      setLetters((prev) => prev.map((x) => (x.id === l.id ? { ...x, opened: true } : x)));
+      setRevealing(null);
+    }, 1300);
+  };
+
+  const fmtDate = (ts: number) =>
+    new Date(ts).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+
+  return (
+    <div className="space-y-8">
+      {/* delivered notification */}
+      {delivered.map((l) => (
+        <div
+          key={l.id}
+          className="overflow-hidden rounded-3xl border border-gold/40 bg-gold/5 p-6 text-center"
+        >
+          {revealing === l.id ? (
+            <div className="animate-scale-in py-6">
+              <Mailbox className="mx-auto h-12 w-12 animate-bounce text-gold" />
+              <p className="mt-3 font-hand text-2xl text-cream">opening…</p>
+            </div>
+          ) : (
+            <>
+              <Sparkles className="mx-auto mb-2 h-7 w-7 text-gold" />
+              <p className="font-hand text-2xl text-cream">A letter from your past self just arrived</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                written on {fmtDate(l.createdAt)}
+              </p>
+              <Button variant="hero" size="lg" className="mt-4" onClick={() => open(l)}>
+                <Mailbox className="h-4 w-4" /> open it
+              </Button>
+            </>
+          )}
+        </div>
+      ))}
+
+      {/* composer */}
+      <div className="rounded-2xl border border-border bg-card/40 p-4">
+        <p className="mb-3 flex items-center gap-2 text-sm text-muted-foreground">
+          <Mailbox className="h-4 w-4 text-gold" /> write something for a future version of you. it
+          stays sealed until the day you choose.
+        </p>
+        <Textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="dear future me,"
+          className="min-h-40 resize-none border-border bg-background/30 leading-relaxed"
+        />
+        <div className="mt-3">
+          <p className="mb-2 text-sm text-muted-foreground">deliver this letter</p>
+          <div className="flex flex-wrap gap-2">
+            {DELIVERY_OPTIONS.map((o) => (
+              <button
+                key={o.months}
+                onClick={() => setMonths(o.months)}
+                className={`rounded-full px-4 py-2 text-sm transition-all ${
+                  months === o.months
+                    ? "bg-gold/15 text-gold ring-1 ring-inset ring-gold/50"
+                    : "border border-border bg-background/30 text-muted-foreground"
+                }`}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <Button variant="hero" size="lg" className="mt-4" disabled={!text.trim()} onClick={send}>
+          <Lock className="h-4 w-4" /> lock this letter
+        </Button>
+      </div>
+
+      {/* on their way */}
+      <div>
+        <h3 className="mb-3 flex items-center gap-2 text-sm font-medium uppercase tracking-wide text-lavender/80">
+          <Clock className="h-4 w-4" /> Letters on their way
+        </h3>
+        {pending.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            no sealed letters yet. write one above — future you will thank you.
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {pending.map((l) => (
+              <div
+                key={l.id}
+                className="flex items-center justify-between rounded-2xl border border-border bg-card/40 px-4 py-3"
+              >
+                <span className="flex items-center gap-2 text-sm text-cream/90">
+                  <Lock className="h-4 w-4 text-muted-foreground" /> sealed letter ·{" "}
+                  {fmtDate(l.deliverAt)}
+                </span>
+                <span className="text-xs text-gold">{countdown(l.deliverAt)}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* opened */}
+      {opened.length > 0 && (
+        <div>
+          <h3 className="mb-3 text-sm font-medium uppercase tracking-wide text-gold/80">
+            Letters you've opened
+          </h3>
+          <div className="space-y-3">
+            {opened.map((l) => (
+              <article key={l.id} className="rounded-2xl border border-gold/20 bg-gold/5 p-4 animate-fade-in">
+                <p className="mb-2 text-xs text-muted-foreground">
+                  written {fmtDate(l.createdAt)} · arrived {fmtDate(l.deliverAt)}
+                </p>
+                <p className="whitespace-pre-wrap text-sm leading-relaxed text-cream/90">{l.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

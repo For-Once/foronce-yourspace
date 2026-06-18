@@ -45,7 +45,22 @@ type Language = { key: string; label: string; term: string };
 const LANGUAGES: Language[] = [
   { key: "english", label: "English", term: "english" },
   { key: "hindi", label: "Hindi", term: "hindi bollywood" },
+  { key: "telugu", label: "Telugu", term: "telugu tollywood" },
+  { key: "tamil", label: "Tamil", term: "tamil kollywood" },
+  { key: "punjabi", label: "Punjabi", term: "punjabi" },
+  { key: "malayalam", label: "Malayalam", term: "malayalam" },
+  { key: "kannada", label: "Kannada", term: "kannada" },
+  { key: "bengali", label: "Bengali", term: "bengali" },
+  { key: "marathi", label: "Marathi", term: "marathi" },
+  { key: "kpop", label: "K-Pop", term: "k-pop korean" },
+  { key: "jpop", label: "J-Pop", term: "j-pop japanese" },
+  { key: "cpop", label: "C-Pop", term: "c-pop mandarin chinese" },
   { key: "spanish", label: "Spanish", term: "spanish latino" },
+  { key: "italian", label: "Italian", term: "italian" },
+  { key: "french", label: "French", term: "french" },
+  { key: "korean", label: "Korean", term: "korean ballad" },
+  { key: "arabic", label: "Arabic", term: "arabic" },
+  { key: "global", label: "Global", term: "global top hits world" },
 ];
 
 function playlistUrl(lang: Language, feeling: Feeling) {

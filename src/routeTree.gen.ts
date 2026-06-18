@@ -14,8 +14,11 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppYourSpaceRouteImport } from './routes/_app.your-space'
+import { Route as AppVaultRouteImport } from './routes/_app.vault'
 import { Route as AppStoreRouteImport } from './routes/_app.store'
+import { Route as AppSettingsRouteImport } from './routes/_app.settings'
 import { Route as AppPromptsRouteImport } from './routes/_app.prompts'
+import { Route as AppPlusRouteImport } from './routes/_app.plus'
 import { Route as AppMusicRouteImport } from './routes/_app.music'
 import { Route as AppMeditationRouteImport } from './routes/_app.meditation'
 import { Route as AppJournalRouteImport } from './routes/_app.journal'
@@ -23,6 +26,7 @@ import { Route as AppItWasRealRouteImport } from './routes/_app.it-was-real'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
 import { Route as AppGoodStuffRouteImport } from './routes/_app.good-stuff'
 import { Route as AppFaqRouteImport } from './routes/_app.faq'
+import { Route as AppConstellationRouteImport } from './routes/_app.constellation'
 import { Route as AppCommunityRouteImport } from './routes/_app.community'
 import { Route as AppBackupRouteImport } from './routes/_app.backup'
 
@@ -50,14 +54,29 @@ const AppYourSpaceRoute = AppYourSpaceRouteImport.update({
   path: '/your-space',
   getParentRoute: () => AppRoute,
 } as any)
+const AppVaultRoute = AppVaultRouteImport.update({
+  id: '/vault',
+  path: '/vault',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppStoreRoute = AppStoreRouteImport.update({
   id: '/store',
   path: '/store',
   getParentRoute: () => AppRoute,
 } as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppPromptsRoute = AppPromptsRouteImport.update({
   id: '/prompts',
   path: '/prompts',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPlusRoute = AppPlusRouteImport.update({
+  id: '/plus',
+  path: '/plus',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMusicRoute = AppMusicRouteImport.update({
@@ -95,6 +114,11 @@ const AppFaqRoute = AppFaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => AppRoute,
 } as any)
+const AppConstellationRoute = AppConstellationRouteImport.update({
+  id: '/constellation',
+  path: '/constellation',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCommunityRoute = AppCommunityRouteImport.update({
   id: '/community',
   path: '/community',
@@ -112,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/backup': typeof AppBackupRoute
   '/community': typeof AppCommunityRoute
+  '/constellation': typeof AppConstellationRoute
   '/faq': typeof AppFaqRoute
   '/good-stuff': typeof AppGoodStuffRoute
   '/home': typeof AppHomeRoute
@@ -119,8 +144,11 @@ export interface FileRoutesByFullPath {
   '/journal': typeof AppJournalRoute
   '/meditation': typeof AppMeditationRoute
   '/music': typeof AppMusicRoute
+  '/plus': typeof AppPlusRoute
   '/prompts': typeof AppPromptsRoute
+  '/settings': typeof AppSettingsRoute
   '/store': typeof AppStoreRoute
+  '/vault': typeof AppVaultRoute
   '/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRoutesByTo {
@@ -129,6 +157,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/backup': typeof AppBackupRoute
   '/community': typeof AppCommunityRoute
+  '/constellation': typeof AppConstellationRoute
   '/faq': typeof AppFaqRoute
   '/good-stuff': typeof AppGoodStuffRoute
   '/home': typeof AppHomeRoute
@@ -136,8 +165,11 @@ export interface FileRoutesByTo {
   '/journal': typeof AppJournalRoute
   '/meditation': typeof AppMeditationRoute
   '/music': typeof AppMusicRoute
+  '/plus': typeof AppPlusRoute
   '/prompts': typeof AppPromptsRoute
+  '/settings': typeof AppSettingsRoute
   '/store': typeof AppStoreRoute
+  '/vault': typeof AppVaultRoute
   '/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRoutesById {
@@ -148,6 +180,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_app/backup': typeof AppBackupRoute
   '/_app/community': typeof AppCommunityRoute
+  '/_app/constellation': typeof AppConstellationRoute
   '/_app/faq': typeof AppFaqRoute
   '/_app/good-stuff': typeof AppGoodStuffRoute
   '/_app/home': typeof AppHomeRoute
@@ -155,8 +188,11 @@ export interface FileRoutesById {
   '/_app/journal': typeof AppJournalRoute
   '/_app/meditation': typeof AppMeditationRoute
   '/_app/music': typeof AppMusicRoute
+  '/_app/plus': typeof AppPlusRoute
   '/_app/prompts': typeof AppPromptsRoute
+  '/_app/settings': typeof AppSettingsRoute
   '/_app/store': typeof AppStoreRoute
+  '/_app/vault': typeof AppVaultRoute
   '/_app/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRouteTypes {
@@ -167,6 +203,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/backup'
     | '/community'
+    | '/constellation'
     | '/faq'
     | '/good-stuff'
     | '/home'
@@ -174,8 +211,11 @@ export interface FileRouteTypes {
     | '/journal'
     | '/meditation'
     | '/music'
+    | '/plus'
     | '/prompts'
+    | '/settings'
     | '/store'
+    | '/vault'
     | '/your-space'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -184,6 +224,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/backup'
     | '/community'
+    | '/constellation'
     | '/faq'
     | '/good-stuff'
     | '/home'
@@ -191,8 +232,11 @@ export interface FileRouteTypes {
     | '/journal'
     | '/meditation'
     | '/music'
+    | '/plus'
     | '/prompts'
+    | '/settings'
     | '/store'
+    | '/vault'
     | '/your-space'
   id:
     | '__root__'
@@ -202,6 +246,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/_app/backup'
     | '/_app/community'
+    | '/_app/constellation'
     | '/_app/faq'
     | '/_app/good-stuff'
     | '/_app/home'
@@ -209,8 +254,11 @@ export interface FileRouteTypes {
     | '/_app/journal'
     | '/_app/meditation'
     | '/_app/music'
+    | '/_app/plus'
     | '/_app/prompts'
+    | '/_app/settings'
     | '/_app/store'
+    | '/_app/vault'
     | '/_app/your-space'
   fileRoutesById: FileRoutesById
 }
@@ -258,6 +306,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppYourSpaceRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/vault': {
+      id: '/_app/vault'
+      path: '/vault'
+      fullPath: '/vault'
+      preLoaderRoute: typeof AppVaultRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/store': {
       id: '/_app/store'
       path: '/store'
@@ -265,11 +320,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppStoreRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/prompts': {
       id: '/_app/prompts'
       path: '/prompts'
       fullPath: '/prompts'
       preLoaderRoute: typeof AppPromptsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/plus': {
+      id: '/_app/plus'
+      path: '/plus'
+      fullPath: '/plus'
+      preLoaderRoute: typeof AppPlusRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/music': {
@@ -321,6 +390,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFaqRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/constellation': {
+      id: '/_app/constellation'
+      path: '/constellation'
+      fullPath: '/constellation'
+      preLoaderRoute: typeof AppConstellationRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/community': {
       id: '/_app/community'
       path: '/community'
@@ -341,6 +417,7 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppBackupRoute: typeof AppBackupRoute
   AppCommunityRoute: typeof AppCommunityRoute
+  AppConstellationRoute: typeof AppConstellationRoute
   AppFaqRoute: typeof AppFaqRoute
   AppGoodStuffRoute: typeof AppGoodStuffRoute
   AppHomeRoute: typeof AppHomeRoute
@@ -348,14 +425,18 @@ interface AppRouteChildren {
   AppJournalRoute: typeof AppJournalRoute
   AppMeditationRoute: typeof AppMeditationRoute
   AppMusicRoute: typeof AppMusicRoute
+  AppPlusRoute: typeof AppPlusRoute
   AppPromptsRoute: typeof AppPromptsRoute
+  AppSettingsRoute: typeof AppSettingsRoute
   AppStoreRoute: typeof AppStoreRoute
+  AppVaultRoute: typeof AppVaultRoute
   AppYourSpaceRoute: typeof AppYourSpaceRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppBackupRoute: AppBackupRoute,
   AppCommunityRoute: AppCommunityRoute,
+  AppConstellationRoute: AppConstellationRoute,
   AppFaqRoute: AppFaqRoute,
   AppGoodStuffRoute: AppGoodStuffRoute,
   AppHomeRoute: AppHomeRoute,
@@ -363,8 +444,11 @@ const AppRouteChildren: AppRouteChildren = {
   AppJournalRoute: AppJournalRoute,
   AppMeditationRoute: AppMeditationRoute,
   AppMusicRoute: AppMusicRoute,
+  AppPlusRoute: AppPlusRoute,
   AppPromptsRoute: AppPromptsRoute,
+  AppSettingsRoute: AppSettingsRoute,
   AppStoreRoute: AppStoreRoute,
+  AppVaultRoute: AppVaultRoute,
   AppYourSpaceRoute: AppYourSpaceRoute,
 }
 
