@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppYourSpaceRouteImport } from './routes/_app.your-space'
 import { Route as AppVaultRouteImport } from './routes/_app.vault'
 import { Route as AppStoreRouteImport } from './routes/_app.store'
+import { Route as AppSettingsRouteImport } from './routes/_app.settings'
 import { Route as AppPromptsRouteImport } from './routes/_app.prompts'
 import { Route as AppPlusRouteImport } from './routes/_app.plus'
 import { Route as AppMusicRouteImport } from './routes/_app.music'
@@ -61,6 +62,11 @@ const AppVaultRoute = AppVaultRouteImport.update({
 const AppStoreRoute = AppStoreRouteImport.update({
   id: '/store',
   path: '/store',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
 const AppPromptsRoute = AppPromptsRouteImport.update({
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/music': typeof AppMusicRoute
   '/plus': typeof AppPlusRoute
   '/prompts': typeof AppPromptsRoute
+  '/settings': typeof AppSettingsRoute
   '/store': typeof AppStoreRoute
   '/vault': typeof AppVaultRoute
   '/your-space': typeof AppYourSpaceRoute
@@ -160,6 +167,7 @@ export interface FileRoutesByTo {
   '/music': typeof AppMusicRoute
   '/plus': typeof AppPlusRoute
   '/prompts': typeof AppPromptsRoute
+  '/settings': typeof AppSettingsRoute
   '/store': typeof AppStoreRoute
   '/vault': typeof AppVaultRoute
   '/your-space': typeof AppYourSpaceRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/_app/music': typeof AppMusicRoute
   '/_app/plus': typeof AppPlusRoute
   '/_app/prompts': typeof AppPromptsRoute
+  '/_app/settings': typeof AppSettingsRoute
   '/_app/store': typeof AppStoreRoute
   '/_app/vault': typeof AppVaultRoute
   '/_app/your-space': typeof AppYourSpaceRoute
@@ -204,6 +213,7 @@ export interface FileRouteTypes {
     | '/music'
     | '/plus'
     | '/prompts'
+    | '/settings'
     | '/store'
     | '/vault'
     | '/your-space'
@@ -224,6 +234,7 @@ export interface FileRouteTypes {
     | '/music'
     | '/plus'
     | '/prompts'
+    | '/settings'
     | '/store'
     | '/vault'
     | '/your-space'
@@ -245,6 +256,7 @@ export interface FileRouteTypes {
     | '/_app/music'
     | '/_app/plus'
     | '/_app/prompts'
+    | '/_app/settings'
     | '/_app/store'
     | '/_app/vault'
     | '/_app/your-space'
@@ -306,6 +318,13 @@ declare module '@tanstack/react-router' {
       path: '/store'
       fullPath: '/store'
       preLoaderRoute: typeof AppStoreRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/prompts': {
@@ -408,6 +427,7 @@ interface AppRouteChildren {
   AppMusicRoute: typeof AppMusicRoute
   AppPlusRoute: typeof AppPlusRoute
   AppPromptsRoute: typeof AppPromptsRoute
+  AppSettingsRoute: typeof AppSettingsRoute
   AppStoreRoute: typeof AppStoreRoute
   AppVaultRoute: typeof AppVaultRoute
   AppYourSpaceRoute: typeof AppYourSpaceRoute
@@ -426,6 +446,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppMusicRoute: AppMusicRoute,
   AppPlusRoute: AppPlusRoute,
   AppPromptsRoute: AppPromptsRoute,
+  AppSettingsRoute: AppSettingsRoute,
   AppStoreRoute: AppStoreRoute,
   AppVaultRoute: AppVaultRoute,
   AppYourSpaceRoute: AppYourSpaceRoute,
