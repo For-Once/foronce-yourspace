@@ -14,6 +14,7 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppYourSpaceRouteImport } from './routes/_app.your-space'
+import { Route as AppVaultRouteImport } from './routes/_app.vault'
 import { Route as AppStoreRouteImport } from './routes/_app.store'
 import { Route as AppPromptsRouteImport } from './routes/_app.prompts'
 import { Route as AppPlusRouteImport } from './routes/_app.plus'
@@ -50,6 +51,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppYourSpaceRoute = AppYourSpaceRouteImport.update({
   id: '/your-space',
   path: '/your-space',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppVaultRoute = AppVaultRouteImport.update({
+  id: '/vault',
+  path: '/vault',
   getParentRoute: () => AppRoute,
 } as any)
 const AppStoreRoute = AppStoreRouteImport.update({
@@ -135,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/plus': typeof AppPlusRoute
   '/prompts': typeof AppPromptsRoute
   '/store': typeof AppStoreRoute
+  '/vault': typeof AppVaultRoute
   '/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRoutesByTo {
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/plus': typeof AppPlusRoute
   '/prompts': typeof AppPromptsRoute
   '/store': typeof AppStoreRoute
+  '/vault': typeof AppVaultRoute
   '/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRoutesById {
@@ -175,6 +183,7 @@ export interface FileRoutesById {
   '/_app/plus': typeof AppPlusRoute
   '/_app/prompts': typeof AppPromptsRoute
   '/_app/store': typeof AppStoreRoute
+  '/_app/vault': typeof AppVaultRoute
   '/_app/your-space': typeof AppYourSpaceRoute
 }
 export interface FileRouteTypes {
@@ -196,6 +205,7 @@ export interface FileRouteTypes {
     | '/plus'
     | '/prompts'
     | '/store'
+    | '/vault'
     | '/your-space'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -215,6 +225,7 @@ export interface FileRouteTypes {
     | '/plus'
     | '/prompts'
     | '/store'
+    | '/vault'
     | '/your-space'
   id:
     | '__root__'
@@ -235,6 +246,7 @@ export interface FileRouteTypes {
     | '/_app/plus'
     | '/_app/prompts'
     | '/_app/store'
+    | '/_app/vault'
     | '/_app/your-space'
   fileRoutesById: FileRoutesById
 }
@@ -280,6 +292,13 @@ declare module '@tanstack/react-router' {
       path: '/your-space'
       fullPath: '/your-space'
       preLoaderRoute: typeof AppYourSpaceRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/vault': {
+      id: '/_app/vault'
+      path: '/vault'
+      fullPath: '/vault'
+      preLoaderRoute: typeof AppVaultRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/store': {
@@ -390,6 +409,7 @@ interface AppRouteChildren {
   AppPlusRoute: typeof AppPlusRoute
   AppPromptsRoute: typeof AppPromptsRoute
   AppStoreRoute: typeof AppStoreRoute
+  AppVaultRoute: typeof AppVaultRoute
   AppYourSpaceRoute: typeof AppYourSpaceRoute
 }
 
@@ -407,6 +427,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppPlusRoute: AppPlusRoute,
   AppPromptsRoute: AppPromptsRoute,
   AppStoreRoute: AppStoreRoute,
+  AppVaultRoute: AppVaultRoute,
   AppYourSpaceRoute: AppYourSpaceRoute,
 }
 
