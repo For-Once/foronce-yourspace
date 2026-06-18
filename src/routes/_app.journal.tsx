@@ -107,17 +107,21 @@ async function fileToCompressedDataUrl(file: File, max = 900): Promise<string> {
 
 function Journal() {
   const [entries, setEntries] = useLocalStorage<Entry[]>("foronce.journal", []);
+  const { theme } = useJournalTheme();
 
   return (
-    <div>
+    <div
+      className="-mx-4 rounded-3xl px-4 py-2 transition-colors lg:-mx-10 lg:px-10"
+      style={themeStyle(theme)}
+    >
       <PageHeader
         title="Private Space"
         subtitle="Fully private. No one else will ever see this. Just you, the page, and a few cute friends."
       >
         <div className="mt-4 flex select-none gap-2 text-2xl" aria-hidden="true">
-          {["🌙", "⭐", "🌸", "🦋", "🫧"].map((s, i) => (
+          {theme.accents.concat(["🌙", "⭐", "🌸"]).slice(0, 5).map((s, i) => (
             <span
-              key={s}
+              key={`${s}-${i}`}
               className="inline-block animate-pulse"
               style={{ animationDelay: `${i * 0.4}s` }}
             >
@@ -129,6 +133,7 @@ function Journal() {
       <Tabs defaultValue="entries">
         <TabsList className="mb-6 flex h-auto w-full flex-wrap justify-start gap-1 bg-card/40 p-1">
           <TabsTrigger value="entries">Journal</TabsTrigger>
+          <TabsTrigger value="future">Letter to Future You</TabsTrigger>
           <TabsTrigger value="canvas">Doodle & Stickers</TabsTrigger>
           <TabsTrigger value="gallery">Moments</TabsTrigger>
           <TabsTrigger value="letters">Unsent letters</TabsTrigger>
@@ -137,6 +142,9 @@ function Journal() {
 
         <TabsContent value="entries">
           <Composer entries={entries} setEntries={setEntries} kind="entry" />
+        </TabsContent>
+        <TabsContent value="future">
+          <FutureLetters />
         </TabsContent>
         <TabsContent value="canvas">
           <CanvasStudio entries={entries} setEntries={setEntries} />
