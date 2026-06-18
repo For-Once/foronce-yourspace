@@ -241,6 +241,7 @@ function Composer({
   };
 
   const save = () => {
+    if (capped) return;
     if (!text.trim() && !image && stickers.length === 0) return;
     setEntries((prev) => [
       {
