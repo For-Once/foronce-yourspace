@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppYourSpaceRouteImport } from './routes/_app.your-space'
 import { Route as AppStoreRouteImport } from './routes/_app.store'
 import { Route as AppPromptsRouteImport } from './routes/_app.prompts'
+import { Route as AppPlusRouteImport } from './routes/_app.plus'
 import { Route as AppMusicRouteImport } from './routes/_app.music'
 import { Route as AppMeditationRouteImport } from './routes/_app.meditation'
 import { Route as AppJournalRouteImport } from './routes/_app.journal'
@@ -58,6 +59,11 @@ const AppStoreRoute = AppStoreRouteImport.update({
 const AppPromptsRoute = AppPromptsRouteImport.update({
   id: '/prompts',
   path: '/prompts',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPlusRoute = AppPlusRouteImport.update({
+  id: '/plus',
+  path: '/plus',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMusicRoute = AppMusicRouteImport.update({
@@ -119,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/journal': typeof AppJournalRoute
   '/meditation': typeof AppMeditationRoute
   '/music': typeof AppMusicRoute
+  '/plus': typeof AppPlusRoute
   '/prompts': typeof AppPromptsRoute
   '/store': typeof AppStoreRoute
   '/your-space': typeof AppYourSpaceRoute
@@ -136,6 +143,7 @@ export interface FileRoutesByTo {
   '/journal': typeof AppJournalRoute
   '/meditation': typeof AppMeditationRoute
   '/music': typeof AppMusicRoute
+  '/plus': typeof AppPlusRoute
   '/prompts': typeof AppPromptsRoute
   '/store': typeof AppStoreRoute
   '/your-space': typeof AppYourSpaceRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   '/_app/journal': typeof AppJournalRoute
   '/_app/meditation': typeof AppMeditationRoute
   '/_app/music': typeof AppMusicRoute
+  '/_app/plus': typeof AppPlusRoute
   '/_app/prompts': typeof AppPromptsRoute
   '/_app/store': typeof AppStoreRoute
   '/_app/your-space': typeof AppYourSpaceRoute
@@ -174,6 +183,7 @@ export interface FileRouteTypes {
     | '/journal'
     | '/meditation'
     | '/music'
+    | '/plus'
     | '/prompts'
     | '/store'
     | '/your-space'
@@ -191,6 +201,7 @@ export interface FileRouteTypes {
     | '/journal'
     | '/meditation'
     | '/music'
+    | '/plus'
     | '/prompts'
     | '/store'
     | '/your-space'
@@ -209,6 +220,7 @@ export interface FileRouteTypes {
     | '/_app/journal'
     | '/_app/meditation'
     | '/_app/music'
+    | '/_app/plus'
     | '/_app/prompts'
     | '/_app/store'
     | '/_app/your-space'
@@ -270,6 +282,13 @@ declare module '@tanstack/react-router' {
       path: '/prompts'
       fullPath: '/prompts'
       preLoaderRoute: typeof AppPromptsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/plus': {
+      id: '/_app/plus'
+      path: '/plus'
+      fullPath: '/plus'
+      preLoaderRoute: typeof AppPlusRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/music': {
@@ -348,6 +367,7 @@ interface AppRouteChildren {
   AppJournalRoute: typeof AppJournalRoute
   AppMeditationRoute: typeof AppMeditationRoute
   AppMusicRoute: typeof AppMusicRoute
+  AppPlusRoute: typeof AppPlusRoute
   AppPromptsRoute: typeof AppPromptsRoute
   AppStoreRoute: typeof AppStoreRoute
   AppYourSpaceRoute: typeof AppYourSpaceRoute
@@ -363,6 +383,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppJournalRoute: AppJournalRoute,
   AppMeditationRoute: AppMeditationRoute,
   AppMusicRoute: AppMusicRoute,
+  AppPlusRoute: AppPlusRoute,
   AppPromptsRoute: AppPromptsRoute,
   AppStoreRoute: AppStoreRoute,
   AppYourSpaceRoute: AppYourSpaceRoute,
