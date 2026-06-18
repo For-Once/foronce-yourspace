@@ -180,7 +180,7 @@ function PlanCard({ tier, disabled }: { tier: Tier; disabled?: boolean }) {
         className={cn(
           "relative flex flex-col rounded-3xl border p-6 transition-all",
           best
-            ? "border-gold/50 bg-gold/5 shadow-[0_0_40px_-12px_hsl(var(--gold)/0.4)]"
+            ? "border-gold/50 bg-gold/5 ring-1 ring-gold/30"
             : "border-border bg-card/40",
         )}
       >
