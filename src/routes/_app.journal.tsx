@@ -172,6 +172,7 @@ function Composer({
   setEntries: (fn: (prev: Entry[]) => Entry[]) => void;
   kind: "entry" | "letter" | "memory";
 }) {
+  const { isPlus } = usePlus();
   const [text, setText] = useState("");
   const [to, setTo] = useState("");
   const [mood, setMood] = useState<string>();
@@ -180,6 +181,13 @@ function Composer({
   const [image, setImage] = useState<string | undefined>();
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  // Free tier caps basic journal entries at 20 total.
+  const basicCount = useMemo(
+    () => entries.filter((e) => e.kind === "entry" || e.kind === "your-space").length,
+    [entries],
+  );
+  const capped = kind === "entry" && !isPlus && basicCount >= FREE_JOURNAL_LIMIT;
 
   const config = {
     entry: {
