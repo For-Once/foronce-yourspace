@@ -12,6 +12,10 @@ import {
   Smile,
   Frown,
   Meh,
+  Mailbox,
+  Clock,
+  Lock,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,9 +26,12 @@ import { MoodSelector } from "@/components/MoodSelector";
 import { StickerTray } from "@/components/StickerTray";
 import { DoodleCanvas, type DoodleCanvasHandle } from "@/components/DoodleCanvas";
 import { CameraCapture } from "@/components/CameraCapture";
+import { UpgradePrompt, PlusLock } from "@/components/UpgradePrompt";
 import { VoiceRecorder } from "./_app.your-space";
 import { useLocalStorage, uid } from "@/lib/use-local-storage";
 import { getMood, moodColorStyle } from "@/lib/moods";
+import { usePlus, FREE_JOURNAL_LIMIT } from "@/lib/plus";
+import { useJournalTheme, themeStyle } from "@/lib/themes";
 import { affirm } from "@/lib/affirm";
 
 export const Route = createFileRoute("/_app/journal")({
