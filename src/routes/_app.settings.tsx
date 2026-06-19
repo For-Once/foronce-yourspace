@@ -93,7 +93,7 @@ function SettingsPage() {
   );
 }
 
-function ThemePicker({ locked }: { locked: boolean }) {
+function ThemePicker({ locked, showUpsell }: { locked: boolean; showUpsell: boolean }) {
   const { themeId, setThemeId } = useJournalTheme();
 
   return (
@@ -110,7 +110,7 @@ function ThemePicker({ locked }: { locked: boolean }) {
           }}
         />
       ))}
-      {locked && (
+      {locked && showUpsell && (
         <p className="sm:col-span-2 mt-1 flex items-center gap-2 text-xs text-muted-foreground">
           <Lock className="h-3.5 w-3.5" /> Themes beyond the default unlock with{" "}
           <Link to="/plus" className="text-gold underline-offset-2 hover:underline">
