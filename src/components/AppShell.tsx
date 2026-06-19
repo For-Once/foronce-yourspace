@@ -20,6 +20,7 @@ import {
 import { MandalaBackground } from "./MandalaBackground";
 import { Toaster } from "./ui/sonner";
 import { cn } from "@/lib/utils";
+import { usePlusVisible } from "@/lib/plus";
 
 interface NavItem {
   to: string;
