@@ -30,7 +30,7 @@ import { UpgradePrompt, PlusLock } from "@/components/UpgradePrompt";
 import { VoiceRecorder } from "./_app.your-space";
 import { useLocalStorage, uid } from "@/lib/use-local-storage";
 import { getMood, moodColorStyle } from "@/lib/moods";
-import { usePlus, FREE_JOURNAL_LIMIT } from "@/lib/plus";
+import { usePlus, usePlusVisible, FREE_JOURNAL_LIMIT } from "@/lib/plus";
 import { useJournalTheme, themeStyle } from "@/lib/themes";
 import { affirm } from "@/lib/affirm";
 
@@ -108,6 +108,7 @@ async function fileToCompressedDataUrl(file: File, max = 900): Promise<string> {
 function Journal() {
   const [entries, setEntries] = useLocalStorage<Entry[]>("foronce.journal", []);
   const { theme } = useJournalTheme();
+  const plusVisible = usePlusVisible();
 
   return (
     <div
@@ -133,7 +134,7 @@ function Journal() {
       <Tabs defaultValue="entries">
         <TabsList className="mb-6 flex h-auto w-full flex-wrap justify-start gap-1 bg-card/40 p-1">
           <TabsTrigger value="entries">Journal</TabsTrigger>
-          <TabsTrigger value="future">Letter to Future You</TabsTrigger>
+          {plusVisible && <TabsTrigger value="future">Letter to Future You</TabsTrigger>}
           <TabsTrigger value="canvas">Doodle & Stickers</TabsTrigger>
           <TabsTrigger value="gallery">Moments</TabsTrigger>
           <TabsTrigger value="letters">Unsent letters</TabsTrigger>
@@ -143,9 +144,11 @@ function Journal() {
         <TabsContent value="entries">
           <Composer entries={entries} setEntries={setEntries} kind="entry" />
         </TabsContent>
-        <TabsContent value="future">
-          <FutureLetters />
-        </TabsContent>
+        {plusVisible && (
+          <TabsContent value="future">
+            <FutureLetters />
+          </TabsContent>
+        )}
         <TabsContent value="canvas">
           <CanvasStudio entries={entries} setEntries={setEntries} />
         </TabsContent>
@@ -173,6 +176,7 @@ function Composer({
   kind: "entry" | "letter" | "memory";
 }) {
   const { isPlus } = usePlus();
+  const plusVisible = usePlusVisible();
   const [text, setText] = useState("");
   const [to, setTo] = useState("");
   const [mood, setMood] = useState<string>();
@@ -187,7 +191,8 @@ function Composer({
     () => entries.filter((e) => e.kind === "entry" || e.kind === "your-space").length,
     [entries],
   );
-  const capped = kind === "entry" && !isPlus && basicCount >= FREE_JOURNAL_LIMIT;
+  // While Plus is unlaunched (not visible), journaling is uncapped for everyone.
+  const capped = kind === "entry" && !isPlus && plusVisible && basicCount >= FREE_JOURNAL_LIMIT;
 
   const config = {
     entry: {
@@ -270,7 +275,7 @@ function Composer({
 
   return (
     <div className="space-y-8">
-      {kind === "entry" && !isPlus && (
+      {kind === "entry" && !isPlus && plusVisible && (
         <p className="text-xs text-muted-foreground">
           {Math.min(basicCount, FREE_JOURNAL_LIMIT)} of {FREE_JOURNAL_LIMIT} free entries used
         </p>

@@ -20,12 +20,14 @@ import {
 import { MandalaBackground } from "./MandalaBackground";
 import { Toaster } from "./ui/sonner";
 import { cn } from "@/lib/utils";
+import { usePlusVisible } from "@/lib/plus";
 
 interface NavItem {
   to: string;
   label: string;
   icon: typeof Home;
   primary?: boolean;
+  plus?: boolean;
 }
 
 const NAV: NavItem[] = [
@@ -35,12 +37,12 @@ const NAV: NavItem[] = [
   { to: "/community", label: "Community", icon: Users, primary: true },
   { to: "/music", label: "Music", icon: Music, primary: true },
   { to: "/good-stuff", label: "Good Stuff", icon: Sparkles, primary: true },
-  { to: "/constellation", label: "Mood Constellation", icon: Stars },
-  { to: "/vault", label: "The Vault", icon: Lock },
+  { to: "/constellation", label: "Mood Constellation", icon: Stars, plus: true },
+  { to: "/vault", label: "The Vault", icon: Lock, plus: true },
   { to: "/meditation", label: "Meditation", icon: Flower2 },
   { to: "/prompts", label: "Guided Prompts", icon: MessageCircleHeart },
   { to: "/it-was-real", label: "It Was Real", icon: HeartHandshake },
-  { to: "/plus", label: "For Once Plus", icon: Sparkles },
+  { to: "/plus", label: "For Once Plus", icon: Sparkles, plus: true },
   { to: "/store", label: "Store", icon: Store },
   { to: "/faq", label: "FAQ", icon: HelpCircle },
   { to: "/settings", label: "Settings", icon: Settings },
@@ -66,6 +68,8 @@ function NavLink({ item, collapsed }: { item: NavItem; collapsed?: boolean }) {
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const plusVisible = usePlusVisible();
+  const nav = NAV.filter((item) => !item.plus || plusVisible);
 
   return (
     <div className="relative min-h-screen">
@@ -80,7 +84,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </span>
         </Link>
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <NavLink key={item.to} item={item} />
           ))}
         </nav>

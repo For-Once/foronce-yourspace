@@ -1,6 +1,43 @@
+import { useEffect, useState } from "react";
 import { useLocalStorage } from "./use-local-storage";
 
 // "For Once Plus" — a gentle, optional subscription. Everything core stays free, always.
+
+// ── Launch gating ─────────────────────────────────────────────
+// Plus is not public yet. It stays hidden from everyone until launch,
+// except people who open the private preview link:
+//   /plus?preview=foronce-early-2026
+// That link flips a flag in their browser so they (and only they) can
+// see and use everything Plus.
+export const PLUS_LAUNCHED = false;
+export const PLUS_PREVIEW_TOKEN = "foronce-early-2026";
+const PREVIEW_KEY = "foronce.plus.preview";
+
+export function isPlusPreview(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem(PREVIEW_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function enablePlusPreview() {
+  try {
+    window.localStorage.setItem(PREVIEW_KEY, "1");
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Whether any Plus surface (nav entry, pricing, upsell) should be shown. */
+export function usePlusVisible(): boolean {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    setVisible(PLUS_LAUNCHED || isPlusPreview());
+  }, []);
+  return visible;
+}
 
 export type Tier = "3m" | "6m" | "12m";
 
@@ -56,6 +93,7 @@ export function planFor(tier?: Tier) {
 
 export function usePlus() {
   const [plus, setPlus, hydrated] = useLocalStorage<PlusState>(KEY, { active: false });
+  const preview = usePlusVisible();
 
   const activate = (tier: Tier) => {
     const plan = planFor(tier);
@@ -71,5 +109,7 @@ export function usePlus() {
 
   const cancel = () => setPlus({ active: false });
 
-  return { plus, isPlus: plus.active, activate, cancel, hydrated };
+  // While Plus is unlaunched, the private preview link unlocks every feature
+  // for the previewer so it can be tested end-to-end.
+  return { plus, isPlus: plus.active || preview, activate, cancel, hydrated };
 }

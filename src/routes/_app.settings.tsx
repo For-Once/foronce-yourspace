@@ -3,7 +3,7 @@ import { Sparkles, Heart, Check, Palette, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/PageHeader";
 import { PlusBadge } from "@/components/UpgradePrompt";
-import { usePlus, planFor, PLUS_NOTE } from "@/lib/plus";
+import { usePlus, usePlusVisible, planFor, PLUS_NOTE } from "@/lib/plus";
 import { THEMES, useJournalTheme, themeStyle, type JournalTheme } from "@/lib/themes";
 import { affirm } from "@/lib/affirm";
 import { cn } from "@/lib/utils";
@@ -23,12 +23,14 @@ export const Route = createFileRoute("/_app/settings")({
 
 function SettingsPage() {
   const { plus, isPlus, cancel } = usePlus();
+  const plusVisible = usePlusVisible();
 
   return (
     <div>
       <PageHeader title="Settings" subtitle="Your plan and the look of your private space." />
 
-      {/* Plan */}
+      {/* Plan — hidden until For Once Plus launches */}
+      {plusVisible && (
       <section className="mb-10">
         <h2 className="mb-3 font-hand text-3xl text-cream">For Once Plus</h2>
         {isPlus ? (
@@ -77,6 +79,7 @@ function SettingsPage() {
           </div>
         )}
       </section>
+      )}
 
       {/* Themes */}
       <section>
@@ -84,13 +87,13 @@ function SettingsPage() {
         <p className="mb-4 text-sm text-muted-foreground">
           Choose a theme for your private space — preview it before you apply.
         </p>
-        <ThemePicker locked={!isPlus} />
+        <ThemePicker locked={!isPlus} showUpsell={plusVisible} />
       </section>
     </div>
   );
 }
 
-function ThemePicker({ locked }: { locked: boolean }) {
+function ThemePicker({ locked, showUpsell }: { locked: boolean; showUpsell: boolean }) {
   const { themeId, setThemeId } = useJournalTheme();
 
   return (
@@ -107,7 +110,7 @@ function ThemePicker({ locked }: { locked: boolean }) {
           }}
         />
       ))}
-      {locked && (
+      {locked && showUpsell && (
         <p className="sm:col-span-2 mt-1 flex items-center gap-2 text-xs text-muted-foreground">
           <Lock className="h-3.5 w-3.5" /> Themes beyond the default unlock with{" "}
           <Link to="/plus" className="text-gold underline-offset-2 hover:underline">
