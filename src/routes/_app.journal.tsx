@@ -108,6 +108,7 @@ async function fileToCompressedDataUrl(file: File, max = 900): Promise<string> {
 function Journal() {
   const [entries, setEntries] = useLocalStorage<Entry[]>("foronce.journal", []);
   const { theme } = useJournalTheme();
+  const plusVisible = usePlusVisible();
 
   return (
     <div
