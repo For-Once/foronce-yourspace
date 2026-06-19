@@ -275,7 +275,7 @@ function Composer({
 
   return (
     <div className="space-y-8">
-      {kind === "entry" && !isPlus && (
+      {kind === "entry" && !isPlus && plusVisible && (
         <p className="text-xs text-muted-foreground">
           {Math.min(basicCount, FREE_JOURNAL_LIMIT)} of {FREE_JOURNAL_LIMIT} free entries used
         </p>
