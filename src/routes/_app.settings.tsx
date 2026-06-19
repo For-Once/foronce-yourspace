@@ -3,7 +3,7 @@ import { Sparkles, Heart, Check, Palette, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/PageHeader";
 import { PlusBadge } from "@/components/UpgradePrompt";
-import { usePlus, planFor, PLUS_NOTE } from "@/lib/plus";
+import { usePlus, usePlusVisible, planFor, PLUS_NOTE } from "@/lib/plus";
 import { THEMES, useJournalTheme, themeStyle, type JournalTheme } from "@/lib/themes";
 import { affirm } from "@/lib/affirm";
 import { cn } from "@/lib/utils";
