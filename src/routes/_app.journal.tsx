@@ -134,7 +134,7 @@ function Journal() {
       <Tabs defaultValue="entries">
         <TabsList className="mb-6 flex h-auto w-full flex-wrap justify-start gap-1 bg-card/40 p-1">
           <TabsTrigger value="entries">Journal</TabsTrigger>
-          <TabsTrigger value="future">Letter to Future You</TabsTrigger>
+          {plusVisible && <TabsTrigger value="future">Letter to Future You</TabsTrigger>}
           <TabsTrigger value="canvas">Doodle & Stickers</TabsTrigger>
           <TabsTrigger value="gallery">Moments</TabsTrigger>
           <TabsTrigger value="letters">Unsent letters</TabsTrigger>
@@ -144,9 +144,11 @@ function Journal() {
         <TabsContent value="entries">
           <Composer entries={entries} setEntries={setEntries} kind="entry" />
         </TabsContent>
-        <TabsContent value="future">
-          <FutureLetters />
-        </TabsContent>
+        {plusVisible && (
+          <TabsContent value="future">
+            <FutureLetters />
+          </TabsContent>
+        )}
         <TabsContent value="canvas">
           <CanvasStudio entries={entries} setEntries={setEntries} />
         </TabsContent>
