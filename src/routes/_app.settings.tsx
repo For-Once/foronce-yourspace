@@ -23,12 +23,14 @@ export const Route = createFileRoute("/_app/settings")({
 
 function SettingsPage() {
   const { plus, isPlus, cancel } = usePlus();
+  const plusVisible = usePlusVisible();
 
   return (
     <div>
       <PageHeader title="Settings" subtitle="Your plan and the look of your private space." />
 
-      {/* Plan */}
+      {/* Plan — hidden until For Once Plus launches */}
+      {plusVisible && (
       <section className="mb-10">
         <h2 className="mb-3 font-hand text-3xl text-cream">For Once Plus</h2>
         {isPlus ? (
