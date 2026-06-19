@@ -191,7 +191,8 @@ function Composer({
     () => entries.filter((e) => e.kind === "entry" || e.kind === "your-space").length,
     [entries],
   );
-  const capped = kind === "entry" && !isPlus && basicCount >= FREE_JOURNAL_LIMIT;
+  // While Plus is unlaunched (not visible), journaling is uncapped for everyone.
+  const capped = kind === "entry" && !isPlus && plusVisible && basicCount >= FREE_JOURNAL_LIMIT;
 
   const config = {
     entry: {
