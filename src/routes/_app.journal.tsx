@@ -176,6 +176,7 @@ function Composer({
   kind: "entry" | "letter" | "memory";
 }) {
   const { isPlus } = usePlus();
+  const plusVisible = usePlusVisible();
   const [text, setText] = useState("");
   const [to, setTo] = useState("");
   const [mood, setMood] = useState<string>();
