@@ -87,7 +87,7 @@ function SettingsPage() {
         <p className="mb-4 text-sm text-muted-foreground">
           Choose a theme for your private space — preview it before you apply.
         </p>
-        <ThemePicker locked={!isPlus} />
+        <ThemePicker locked={!isPlus} showUpsell={plusVisible} />
       </section>
     </div>
   );
