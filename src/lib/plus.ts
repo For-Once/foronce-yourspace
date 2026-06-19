@@ -93,6 +93,7 @@ export function planFor(tier?: Tier) {
 
 export function usePlus() {
   const [plus, setPlus, hydrated] = useLocalStorage<PlusState>(KEY, { active: false });
+  const preview = usePlusVisible();
 
   const activate = (tier: Tier) => {
     const plan = planFor(tier);
@@ -108,5 +109,7 @@ export function usePlus() {
 
   const cancel = () => setPlus({ active: false });
 
-  return { plus, isPlus: plus.active, activate, cancel, hydrated };
+  // While Plus is unlaunched, the private preview link unlocks every feature
+  // for the previewer so it can be tested end-to-end.
+  return { plus, isPlus: plus.active || preview, activate, cancel, hydrated };
 }
