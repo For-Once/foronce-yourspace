@@ -68,6 +68,8 @@ function NavLink({ item, collapsed }: { item: NavItem; collapsed?: boolean }) {
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const plusVisible = usePlusVisible();
+  const nav = NAV.filter((item) => !item.plus || plusVisible);
 
   return (
     <div className="relative min-h-screen">
@@ -82,7 +84,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </span>
         </Link>
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <NavLink key={item.to} item={item} />
           ))}
         </nav>
