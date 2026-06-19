@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
   Sparkles,
   Check,
@@ -12,11 +12,22 @@ import {
   Smartphone,
   CreditCard,
   Landmark,
+  EyeOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHeader, Whisper } from "@/components/PageHeader";
 import { PlusBadge } from "@/components/UpgradePrompt";
-import { PLANS, PLUS_NOTE, planFor, usePlus, type Tier } from "@/lib/plus";
+import {
+  PLANS,
+  PLUS_LAUNCHED,
+  PLUS_NOTE,
+  PLUS_PREVIEW_TOKEN,
+  enablePlusPreview,
+  isPlusPreview,
+  planFor,
+  usePlus,
+  type Tier,
+} from "@/lib/plus";
 import { affirm } from "@/lib/affirm";
 import { cn } from "@/lib/utils";
 
