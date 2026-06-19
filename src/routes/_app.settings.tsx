@@ -79,6 +79,7 @@ function SettingsPage() {
           </div>
         )}
       </section>
+      )}
 
       {/* Themes */}
       <section>
