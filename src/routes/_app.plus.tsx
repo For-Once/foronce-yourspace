@@ -86,9 +86,35 @@ const FREE_FOREVER = [
 
 function PlusPage() {
   const { plus, isPlus } = usePlus();
+  const navigate = useNavigate();
+  const [access, setAccess] = useState<"checking" | "allowed" | "denied">("checking");
+
+  useEffect(() => {
+    // Opening the private preview link unlocks Plus for this browser.
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("preview") === PLUS_PREVIEW_TOKEN) {
+      enablePlusPreview();
+    }
+    setAccess(PLUS_LAUNCHED || isPlusPreview() ? "allowed" : "denied");
+  }, []);
+
+  useEffect(() => {
+    if (access === "denied") navigate({ to: "/home" });
+  }, [access, navigate]);
+
+  if (access !== "allowed") return null;
 
   return (
     <div>
+      {!PLUS_LAUNCHED && (
+        <div className="mb-6 flex items-center gap-3 rounded-2xl border border-lavender/30 bg-lavender/10 p-4 text-sm text-cream">
+          <EyeOff className="h-5 w-5 shrink-0 text-lavender" />
+          <span>
+            <strong>Private preview.</strong> For Once Plus is hidden from the public for now —
+            only people with your preview link can see this page.
+          </span>
+        </div>
+      )}
       <PageHeader
         title="For Once Plus"
         subtitle="A little more, when you're ready — never required, never pushy."
@@ -97,6 +123,7 @@ function PlusPage() {
           {PLUS_NOTE}
         </p>
       </PageHeader>
+
 
       {isPlus && (
         <div className="mb-8 flex items-center gap-3 rounded-2xl border border-turquoise/30 bg-turquoise/10 p-5">
