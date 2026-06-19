@@ -30,7 +30,7 @@ import { UpgradePrompt, PlusLock } from "@/components/UpgradePrompt";
 import { VoiceRecorder } from "./_app.your-space";
 import { useLocalStorage, uid } from "@/lib/use-local-storage";
 import { getMood, moodColorStyle } from "@/lib/moods";
-import { usePlus, FREE_JOURNAL_LIMIT } from "@/lib/plus";
+import { usePlus, usePlusVisible, FREE_JOURNAL_LIMIT } from "@/lib/plus";
 import { useJournalTheme, themeStyle } from "@/lib/themes";
 import { affirm } from "@/lib/affirm";
 
