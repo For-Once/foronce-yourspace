@@ -119,6 +119,9 @@ function ThemePicker({ locked, showUpsell }: { locked: boolean; showUpsell: bool
           .
         </p>
       )}
+    </div>
+  );
+}
 
 function ThemeCard({
   theme,
