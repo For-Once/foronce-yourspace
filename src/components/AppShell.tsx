@@ -16,6 +16,7 @@ import {
   Stars,
   Lock,
   Settings,
+  Gamepad2,
 } from "lucide-react";
 import { MandalaBackground } from "./MandalaBackground";
 import { Toaster } from "./ui/sonner";
