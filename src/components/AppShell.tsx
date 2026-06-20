@@ -30,6 +30,11 @@ interface NavItem {
   plus?: boolean;
 }
 
+interface NavGroup {
+  label: string;
+  items: NavItem[];
+}
+
 const NAV: NavItem[] = [
   { to: "/home", label: "Home", icon: Home, primary: true },
   { to: "/your-space", label: "Your Space", icon: PenLine, primary: true },
@@ -49,19 +54,58 @@ const NAV: NavItem[] = [
   { to: "/backup", label: "Backup & Restore", icon: ShieldCheck },
 ];
 
-function NavLink({ item, collapsed }: { item: NavItem; collapsed?: boolean }) {
-  const { Icon } = { Icon: item.icon };
+const GROUPS: NavGroup[] = [
+  {
+    label: "your spaces",
+    items: [
+      { to: "/home", label: "Home", icon: Home },
+      { to: "/your-space", label: "Your Space", icon: PenLine },
+      { to: "/journal", label: "Journal", icon: BookHeart },
+      { to: "/community", label: "Community", icon: Users },
+    ],
+  },
+  {
+    label: "feel better",
+    items: [
+      { to: "/music", label: "Music", icon: Music },
+      { to: "/meditation", label: "Meditation", icon: Flower2 },
+      { to: "/good-stuff", label: "Good Stuff", icon: Sparkles },
+      { to: "/prompts", label: "Guided Prompts", icon: MessageCircleHeart },
+      { to: "/it-was-real", label: "It Was Real", icon: HeartHandshake },
+    ],
+  },
+  {
+    label: "just for you",
+    items: [
+      { to: "/constellation", label: "Mood Constellation", icon: Stars, plus: true },
+      { to: "/vault", label: "The Vault", icon: Lock, plus: true },
+      { to: "/plus", label: "For Once Plus", icon: Sparkles, plus: true },
+    ],
+  },
+  {
+    label: "more",
+    items: [
+      { to: "/store", label: "Store", icon: Store },
+      { to: "/settings", label: "Settings", icon: Settings },
+      { to: "/faq", label: "FAQ", icon: HelpCircle },
+      { to: "/backup", label: "Backup & Restore", icon: ShieldCheck },
+    ],
+  },
+];
+
+function NavLink({ item }: { item: NavItem }) {
+  const Icon = item.icon;
   return (
     <Link
       to={item.to}
       activeProps={{ className: "bg-turquoise/15 text-turquoise" }}
       inactiveProps={{ className: "text-muted-foreground hover:text-cream hover:bg-card/60" }}
       className={cn(
-        "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
+        "nav-cute group flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all hover:translate-x-0.5",
       )}
     >
-      <Icon className="h-5 w-5 shrink-0" />
-      {!collapsed && <span className="truncate">{item.label}</span>}
+      <Icon className="nav-ico h-[18px] w-[18px] shrink-0" />
+      <span className="truncate">{item.label}</span>
     </Link>
   );
 }
@@ -69,7 +113,10 @@ function NavLink({ item, collapsed }: { item: NavItem; collapsed?: boolean }) {
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const plusVisible = usePlusVisible();
-  const nav = NAV.filter((item) => !item.plus || plusVisible);
+  const groups = GROUPS.map((g) => ({
+    ...g,
+    items: g.items.filter((item) => !item.plus || plusVisible),
+  })).filter((g) => g.items.length > 0);
 
   return (
     <div className="relative min-h-screen">
@@ -77,15 +124,24 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {/* Desktop side nav */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r border-border bg-sidebar/70 backdrop-blur-xl lg:flex">
-        <Link to="/home" className="px-6 pb-2 pt-7">
+        <Link to="/home" className="px-6 pb-3 pt-7">
           <span className="font-hand text-4xl font-bold text-cream">For Once</span>
           <span className="mt-1 block text-xs text-muted-foreground">
             be a little selfish about how you feel
           </span>
         </Link>
-        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-          {nav.map((item) => (
-            <NavLink key={item.to} item={item} />
+        <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-4">
+          {groups.map((group) => (
+            <div key={group.label}>
+              <p className="px-3 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/60">
+                {group.label}
+              </p>
+              <div className="space-y-0.5">
+                {group.items.map((item) => (
+                  <NavLink key={item.to} item={item} />
+                ))}
+              </div>
+            </div>
           ))}
         </nav>
       </aside>

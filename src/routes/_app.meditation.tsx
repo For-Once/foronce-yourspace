@@ -276,7 +276,7 @@ function Meditation() {
                 key={m}
                 onClick={() => setPreset(m)}
                 className={cn(
-                  "rounded-full px-5 py-2 text-sm font-medium transition-all",
+                  "rounded-full px-5 py-2 text-sm font-medium transition-all hover:scale-105",
                   minutes === m
                     ? "bg-turquoise/15 text-turquoise ring-1 ring-inset ring-turquoise/50"
                     : "border border-border bg-card/40 text-muted-foreground hover:text-cream",
@@ -285,6 +285,39 @@ function Meditation() {
                 {m} min
               </button>
             ))}
+          </div>
+
+          {/* custom timer */}
+          <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl border border-lavender/25 bg-lavender/5 px-4 py-3">
+            <span className="font-hand text-xl text-lavender/90">set your own</span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setPreset(Math.max(1, minutes - 1))}
+                className="grid h-9 w-9 place-items-center rounded-full border border-border bg-card/60 text-lg text-cream transition-all hover:scale-110 hover:border-lavender/50 active:scale-95"
+                aria-label="less time"
+              >
+                −
+              </button>
+              <input
+                type="number"
+                min={1}
+                max={180}
+                value={minutes}
+                onChange={(e) => {
+                  const v = Math.min(180, Math.max(1, Number(e.target.value) || 1));
+                  setPreset(v);
+                }}
+                className="w-16 rounded-xl border border-border bg-background/40 px-2 py-1.5 text-center text-lg font-medium text-cream tabular-nums outline-none focus:border-lavender/50"
+              />
+              <button
+                onClick={() => setPreset(Math.min(180, minutes + 1))}
+                className="grid h-9 w-9 place-items-center rounded-full border border-border bg-card/60 text-lg text-cream transition-all hover:scale-110 hover:border-lavender/50 active:scale-95"
+                aria-label="more time"
+              >
+                +
+              </button>
+            </div>
+            <span className="text-sm text-muted-foreground">minutes — as long as you need 🌙</span>
           </div>
         </div>
 
