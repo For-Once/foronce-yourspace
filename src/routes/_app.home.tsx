@@ -99,8 +99,9 @@ function HomePage() {
           : "good evening";
 
   return (
-    <div>
-      <header className="mb-10">
+    <div className="relative">
+      <FloatingStickers count={9} />
+      <header className="relative z-10 mb-10">
         <p className="text-sm text-muted-foreground">{mounted ? greeting : "hello"},</p>
         <h1 className="font-hand text-5xl font-bold text-cream lg:text-6xl">
           <span className="sr-only">Welcome to your For Once home, </span>
