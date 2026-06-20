@@ -101,6 +101,21 @@ export const THEMES: JournalTheme[] = [
     },
   },
   {
+    id: "kpop-pastel",
+    name: "K-Pop Pastel",
+    desc: "Soft idol energy — lilac, bubblegum and glitter.",
+    accents: ["💜", "🩵", "🎤", "🫧", "🐰", "✨"],
+    vars: {
+      bg: "linear-gradient(160deg,#2c2140,#241a36)",
+      panel: "#3a2c54cc",
+      border: "#8a6fc7",
+      text: "#fce7ff",
+      muted: "#d2b8e8",
+      accent: "#c79bff",
+      font: "'Trebuchet MS', 'Segoe UI', sans-serif",
+    },
+  },
+  {
     id: "minimalist-mono",
     name: "Minimalist Mono",
     desc: "Quiet greys, nothing in the way.",
