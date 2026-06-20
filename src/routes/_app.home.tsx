@@ -10,6 +10,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useProfile } from "@/lib/profile";
+import { FloatingStickers } from "@/components/FloatingStickers";
 import { getMood, moodColorStyle } from "@/lib/moods";
 import { INBETWEEN_PHRASES, randomFrom } from "@/lib/copy";
 import { useEffect, useMemo, useState } from "react";
@@ -99,8 +100,9 @@ function HomePage() {
           : "good evening";
 
   return (
-    <div>
-      <header className="mb-10">
+    <div className="relative">
+      <FloatingStickers count={9} />
+      <header className="relative z-10 mb-10">
         <p className="text-sm text-muted-foreground">{mounted ? greeting : "hello"},</p>
         <h1 className="font-hand text-5xl font-bold text-cream lg:text-6xl">
           <span className="sr-only">Welcome to your For Once home, </span>
@@ -114,7 +116,7 @@ function HomePage() {
         <p className="mt-5 font-hand text-3xl text-turquoise/90">{mounted ? phrase : "\u00a0"}</p>
       </header>
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="relative z-10 grid gap-3 sm:grid-cols-2">
         {SPACES.map((s) => {
           const Icon = s.icon;
           return (

@@ -4,7 +4,7 @@ import type {} from "@tanstack/react-start";
 const BASE_URL = "https://foronce-yourspace.lovable.app";
 
 // Note: /plus, /constellation, /vault are intentionally omitted — For Once Plus is not public yet.
-const paths = ["/", "/onboarding", "/home", "/your-space", "/journal", "/good-stuff", "/meditation", "/community", "/music", "/prompts", "/it-was-real", "/settings", "/store", "/faq", "/backup"];
+const paths = ["/", "/onboarding", "/home", "/your-space", "/journal", "/good-stuff", "/meditation", "/calm", "/community", "/music", "/prompts", "/it-was-real", "/settings", "/store", "/faq", "/backup"];
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {

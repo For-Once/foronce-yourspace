@@ -249,6 +249,37 @@
   animation: wiggle 0.5s ease-in-out;
 }
 
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-260px) translateX(14px);
+  }
+  100% {
+    transform: translateY(-540px) translateX(-10px);
+    opacity: 0.9;
+  }
+}
+
+@keyframes star-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(480px) rotate(120deg);
+    opacity: 0.85;
+  }
+}
+
 @utility page-enter {
   animation: rise 0.5s ease-out both;
 }

@@ -26,6 +26,7 @@ import { MoodSelector } from "@/components/MoodSelector";
 import { StickerTray } from "@/components/StickerTray";
 import { DoodleCanvas, type DoodleCanvasHandle } from "@/components/DoodleCanvas";
 import { CameraCapture } from "@/components/CameraCapture";
+import { FloatingStickers } from "@/components/FloatingStickers";
 import { UpgradePrompt, PlusLock } from "@/components/UpgradePrompt";
 import { VoiceRecorder } from "./_app.your-space";
 import { useLocalStorage, uid } from "@/lib/use-local-storage";
@@ -112,9 +113,13 @@ function Journal() {
 
   return (
     <div
-      className="-mx-4 rounded-3xl px-4 py-2 transition-colors lg:-mx-10 lg:px-10"
+      className="relative -mx-4 overflow-hidden rounded-3xl px-4 py-2 transition-colors lg:-mx-10 lg:px-10"
       style={themeStyle(theme)}
     >
+      <FloatingStickers
+        set={theme.accents.length ? theme.accents : ["🌙", "⭐", "🌸"]}
+        count={8}
+      />
       <PageHeader
         title="Private Space"
         subtitle="Fully private. No one else will ever see this. Just you, the page, and a few cute friends."
@@ -131,7 +136,7 @@ function Journal() {
           ))}
         </div>
       </PageHeader>
-      <Tabs defaultValue="entries">
+      <Tabs defaultValue="entries" className="relative z-10">
         <TabsList className="mb-6 flex h-auto w-full flex-wrap justify-start gap-1 bg-card/40 p-1">
           <TabsTrigger value="entries">Journal</TabsTrigger>
           {plusVisible && <TabsTrigger value="future">Letter to Future You</TabsTrigger>}

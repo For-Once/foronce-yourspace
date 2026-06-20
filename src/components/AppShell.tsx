@@ -16,6 +16,7 @@ import {
   Stars,
   Lock,
   Settings,
+  Gamepad2,
 } from "lucide-react";
 import { MandalaBackground } from "./MandalaBackground";
 import { Toaster } from "./ui/sonner";
@@ -69,6 +70,7 @@ const GROUPS: NavGroup[] = [
     items: [
       { to: "/music", label: "Music", icon: Music },
       { to: "/meditation", label: "Meditation", icon: Flower2 },
+      { to: "/calm", label: "Calm Corner", icon: Gamepad2 },
       { to: "/good-stuff", label: "Good Stuff", icon: Sparkles },
       { to: "/prompts", label: "Guided Prompts", icon: MessageCircleHeart },
       { to: "/it-was-real", label: "It Was Real", icon: HeartHandshake },

@@ -28,6 +28,7 @@ import { Route as AppGoodStuffRouteImport } from './routes/_app.good-stuff'
 import { Route as AppFaqRouteImport } from './routes/_app.faq'
 import { Route as AppConstellationRouteImport } from './routes/_app.constellation'
 import { Route as AppCommunityRouteImport } from './routes/_app.community'
+import { Route as AppCalmRouteImport } from './routes/_app.calm'
 import { Route as AppBackupRouteImport } from './routes/_app.backup'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -124,6 +125,11 @@ const AppCommunityRoute = AppCommunityRouteImport.update({
   path: '/community',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCalmRoute = AppCalmRouteImport.update({
+  id: '/calm',
+  path: '/calm',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppBackupRoute = AppBackupRouteImport.update({
   id: '/backup',
   path: '/backup',
@@ -135,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/backup': typeof AppBackupRoute
+  '/calm': typeof AppCalmRoute
   '/community': typeof AppCommunityRoute
   '/constellation': typeof AppConstellationRoute
   '/faq': typeof AppFaqRoute
@@ -156,6 +163,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/backup': typeof AppBackupRoute
+  '/calm': typeof AppCalmRoute
   '/community': typeof AppCommunityRoute
   '/constellation': typeof AppConstellationRoute
   '/faq': typeof AppFaqRoute
@@ -179,6 +187,7 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_app/backup': typeof AppBackupRoute
+  '/_app/calm': typeof AppCalmRoute
   '/_app/community': typeof AppCommunityRoute
   '/_app/constellation': typeof AppConstellationRoute
   '/_app/faq': typeof AppFaqRoute
@@ -202,6 +211,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/sitemap.xml'
     | '/backup'
+    | '/calm'
     | '/community'
     | '/constellation'
     | '/faq'
@@ -223,6 +233,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/sitemap.xml'
     | '/backup'
+    | '/calm'
     | '/community'
     | '/constellation'
     | '/faq'
@@ -245,6 +256,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/sitemap.xml'
     | '/_app/backup'
+    | '/_app/calm'
     | '/_app/community'
     | '/_app/constellation'
     | '/_app/faq'
@@ -404,6 +416,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCommunityRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/calm': {
+      id: '/_app/calm'
+      path: '/calm'
+      fullPath: '/calm'
+      preLoaderRoute: typeof AppCalmRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/backup': {
       id: '/_app/backup'
       path: '/backup'
@@ -416,6 +435,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppBackupRoute: typeof AppBackupRoute
+  AppCalmRoute: typeof AppCalmRoute
   AppCommunityRoute: typeof AppCommunityRoute
   AppConstellationRoute: typeof AppConstellationRoute
   AppFaqRoute: typeof AppFaqRoute
@@ -435,6 +455,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppBackupRoute: AppBackupRoute,
+  AppCalmRoute: AppCalmRoute,
   AppCommunityRoute: AppCommunityRoute,
   AppConstellationRoute: AppConstellationRoute,
   AppFaqRoute: AppFaqRoute,
