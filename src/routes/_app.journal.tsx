@@ -136,7 +136,7 @@ function Journal() {
           ))}
         </div>
       </PageHeader>
-      <Tabs defaultValue="entries">
+      <Tabs defaultValue="entries" className="relative z-10">
         <TabsList className="mb-6 flex h-auto w-full flex-wrap justify-start gap-1 bg-card/40 p-1">
           <TabsTrigger value="entries">Journal</TabsTrigger>
           {plusVisible && <TabsTrigger value="future">Letter to Future You</TabsTrigger>}
