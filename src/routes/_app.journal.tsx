@@ -26,6 +26,7 @@ import { MoodSelector } from "@/components/MoodSelector";
 import { StickerTray } from "@/components/StickerTray";
 import { DoodleCanvas, type DoodleCanvasHandle } from "@/components/DoodleCanvas";
 import { CameraCapture } from "@/components/CameraCapture";
+import { FloatingStickers } from "@/components/FloatingStickers";
 import { UpgradePrompt, PlusLock } from "@/components/UpgradePrompt";
 import { VoiceRecorder } from "./_app.your-space";
 import { useLocalStorage, uid } from "@/lib/use-local-storage";
