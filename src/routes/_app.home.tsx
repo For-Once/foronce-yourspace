@@ -10,6 +10,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useProfile } from "@/lib/profile";
+import { FloatingStickers } from "@/components/FloatingStickers";
 import { getMood, moodColorStyle } from "@/lib/moods";
 import { INBETWEEN_PHRASES, randomFrom } from "@/lib/copy";
 import { useEffect, useMemo, useState } from "react";
