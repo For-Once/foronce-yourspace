@@ -116,7 +116,7 @@ function HomePage() {
         <p className="mt-5 font-hand text-3xl text-turquoise/90">{mounted ? phrase : "\u00a0"}</p>
       </header>
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="relative z-10 grid gap-3 sm:grid-cols-2">
         {SPACES.map((s) => {
           const Icon = s.icon;
           return (
