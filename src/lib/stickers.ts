@@ -46,6 +46,19 @@ export const STICKERS: Sticker[] = [
   { emoji: "🌿", keywords: "herb plant green calm nature" },
   { emoji: "💫", keywords: "dizzy star sparkle dream" },
   { emoji: "🎀", keywords: "bow ribbon cute pink gift" },
+  // K-pop pastel pack
+  { emoji: "💜", keywords: "kpop heart purple borahae love idol" },
+  { emoji: "🩵", keywords: "kpop heart blue light idol soft" },
+  { emoji: "🎤", keywords: "kpop mic sing music idol stage" },
+  { emoji: "🪅", keywords: "kpop party fun cute colourful" },
+  { emoji: "🐰", keywords: "kpop bunny cute idol soft" },
+  { emoji: "🧁", keywords: "kpop cupcake sweet cute dessert" },
+  { emoji: "🌟", keywords: "kpop star idol shine stage glow" },
+  { emoji: "💗", keywords: "kpop heart pink love finger heart" },
+  { emoji: "🦄", keywords: "kpop unicorn dreamy magic pastel" },
+  { emoji: "🍭", keywords: "kpop lollipop candy sweet cute" },
+  { emoji: "👑", keywords: "kpop crown bias idol royal" },
+  { emoji: "🪩", keywords: "kpop disco ball stage dance party" },
 ];
 
 export function searchStickers(query: string): Sticker[] {
