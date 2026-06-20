@@ -112,9 +112,13 @@ function Journal() {
 
   return (
     <div
-      className="-mx-4 rounded-3xl px-4 py-2 transition-colors lg:-mx-10 lg:px-10"
+      className="relative -mx-4 overflow-hidden rounded-3xl px-4 py-2 transition-colors lg:-mx-10 lg:px-10"
       style={themeStyle(theme)}
     >
+      <FloatingStickers
+        set={theme.accents.length ? theme.accents : ["🌙", "⭐", "🌸"]}
+        count={8}
+      />
       <PageHeader
         title="Private Space"
         subtitle="Fully private. No one else will ever see this. Just you, the page, and a few cute friends."
