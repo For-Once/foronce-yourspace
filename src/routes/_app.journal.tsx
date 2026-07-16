@@ -395,6 +395,8 @@ function Composer({
 
         {list.length === 0 ? (
           <p className="py-8 text-center text-sm text-muted-foreground">{config.empty}</p>
+        ) : kind === "entry" ? (
+          <BookView entries={list} setEntries={setEntries} />
         ) : (
           <div className="space-y-3">
             {list.map((e) => (
@@ -404,6 +406,164 @@ function Composer({
         )}
       </div>
     </div>
+  );
+}
+
+function BookView({
+  entries,
+  setEntries,
+}: {
+  entries: Entry[];
+  setEntries: (fn: (prev: Entry[]) => Entry[]) => void;
+}) {
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState("");
+
+  const open = entries.find((e) => e.id === openId);
+
+  const startEdit = () => {
+    if (!open) return;
+    setDraft(open.text ?? "");
+    setEditing(true);
+  };
+
+  const saveEdit = () => {
+    if (!open) return;
+    const next = draft;
+    setEntries((prev) => prev.map((e) => (e.id === open.id ? { ...e, text: next } : e)));
+    setEditing(false);
+    affirm("Kept, just the way you meant it.");
+  };
+
+  const del = () => {
+    if (!open) return;
+    setEntries((prev) => prev.filter((e) => e.id !== open.id));
+    setOpenId(null);
+    setEditing(false);
+  };
+
+  const preview = (t: string) => {
+    const line = (t || "").trim().split("\n")[0] ?? "";
+    return line.length > 80 ? line.slice(0, 80) + "…" : line || "(no words — just kept)";
+  };
+
+  return (
+    <>
+      {/* the book */}
+      <div className="relative overflow-hidden rounded-3xl border border-gold/20 bg-gradient-to-br from-[#2a2320]/70 via-card/60 to-[#1f1a18]/70 p-5 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.6)] sm:p-8">
+        <div className="pointer-events-none absolute inset-y-4 left-6 w-px bg-gold/20 sm:left-10" aria-hidden />
+        <header className="mb-5 flex items-baseline justify-between border-b border-gold/15 pb-3">
+          <h3 className="font-hand text-3xl text-cream">Your Journal</h3>
+          <span className="text-xs uppercase tracking-widest text-muted-foreground">
+            {entries.length} {entries.length === 1 ? "entry" : "entries"}
+          </span>
+        </header>
+        <ol className="space-y-1">
+          {entries.map((e, i) => (
+            <li key={e.id}>
+              <button
+                onClick={() => {
+                  setOpenId(e.id);
+                  setEditing(false);
+                }}
+                className="book-toc-row group flex w-full items-baseline gap-3 rounded-lg px-2 py-2 text-left hover:bg-gold/5"
+              >
+                <span className="w-8 shrink-0 font-hand text-lg text-gold/70">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="flex-1 truncate text-sm text-cream/90 group-hover:text-cream">
+                  {preview(e.text)}
+                </span>
+                <span className="hidden shrink-0 flex-1 border-b border-dotted border-gold/15 sm:block" />
+                <span className="shrink-0 text-xs text-muted-foreground">{fmt(e.createdAt)}</span>
+              </button>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {/* opened page */}
+      {open && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4 backdrop-blur-sm"
+          onClick={() => {
+            setOpenId(null);
+            setEditing(false);
+          }}
+        >
+          <div
+            key={open.id}
+            className="book-page-in relative w-full max-w-2xl overflow-hidden rounded-2xl border border-gold/25 bg-gradient-to-br from-[#f7ecd6] to-[#efe0c2] p-6 text-[#3a2a1a] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] sm:p-8"
+            onClick={(ev) => ev.stopPropagation()}
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(180deg, transparent 0px, transparent 27px, rgba(120,80,40,0.08) 28px)",
+            }}
+          >
+            <button
+              onClick={() => {
+                setOpenId(null);
+                setEditing(false);
+              }}
+              className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-[#3a2a1a]/10 text-[#3a2a1a] transition-colors hover:bg-[#3a2a1a]/20"
+              aria-label="close"
+            >
+              <X className="h-4 w-4" />
+            </button>
+            <p className="mb-1 font-hand text-xs uppercase tracking-widest text-[#7a5a30]">
+              {fmt(open.createdAt)}
+            </p>
+            {editing ? (
+              <Textarea
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                className="min-h-[50vh] resize-none border-[#c9b48a] bg-[#fbf3df]/80 text-base leading-7 text-[#2a1e10] placeholder:text-[#7a5a30]/60"
+                autoFocus
+              />
+            ) : (
+              <p className="min-h-[40vh] whitespace-pre-wrap font-hand text-2xl leading-9 text-[#2a1e10]">
+                {open.text || "(no words — just kept)"}
+              </p>
+            )}
+            {open.image && !editing && (
+              <img
+                src={open.image}
+                alt="a moment you kept"
+                className="mt-4 max-h-72 w-full rounded-lg border border-[#c9b48a] object-cover"
+              />
+            )}
+            {open.stickers && open.stickers.length > 0 && !editing && (
+              <p className="mt-3 select-none text-2xl">{open.stickers.join(" ")}</p>
+            )}
+            <div className="mt-6 flex flex-wrap items-center justify-end gap-2 border-t border-[#c9b48a]/60 pt-4">
+              {editing ? (
+                <>
+                  <Button variant="soft" size="sm" onClick={() => setEditing(false)}>
+                    cancel
+                  </Button>
+                  <Button variant="hero" size="sm" onClick={saveEdit}>
+                    <Save className="h-4 w-4" /> save
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={del}
+                    className="flex items-center gap-1 rounded-full px-3 py-1.5 text-xs text-[#8a3a2a] transition-colors hover:bg-[#8a3a2a]/10"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" /> delete
+                  </button>
+                  <Button variant="hero" size="sm" onClick={startEdit}>
+                    <Brush className="h-4 w-4" /> edit
+                  </Button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
