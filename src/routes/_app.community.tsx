@@ -36,15 +36,6 @@ interface CommunityPost {
   createdAt: number;
 }
 
-const SEED: CommunityPost[] = [
-  { id: "s1", text: "some days surviving is the whole achievement. that counts.", mood: "tired", hearts: 42, feed: "support", author: "quietwave", createdAt: Date.now() - 6e6 },
-  { id: "s2", text: "i told someone how i really felt today and the sky didn't fall.", mood: "relieved", hearts: 31, feed: "support", author: "softfern", createdAt: Date.now() - 2e7 },
-  { id: "s3", text: "you're not behind in life. there's no schedule. breathe.", mood: "lonely", hearts: 58, feed: "support", author: "moonlitharbor", createdAt: Date.now() - 9e7 },
-  { id: "g1", text: "i got the job. i'm crying happy tears in a parking lot.", mood: "excited", hearts: 67, feed: "good", author: "goldenfern", createdAt: Date.now() - 1e6 },
-  { id: "g2", text: "my plant grew a new leaf and i feel weirdly proud.", mood: "content", hearts: 22, feed: "good", author: "mistyshore", createdAt: Date.now() - 3e7 },
-  { id: "g3", text: "first full night of sleep in weeks. i feel human again.", mood: "peaceful", hearts: 19, feed: "good", author: "calmriver", createdAt: Date.now() - 5e7 },
-];
-
 const NOT_ALONE = [
   "you don't have to figure it all out tonight.",
   "feeling too much is still feeling. it's allowed.",
@@ -53,11 +44,6 @@ const NOT_ALONE = [
   "good days are proof that they exist. more are coming.",
 ];
 
-const PLAYLISTS = [
-  { title: "songs that got me through", note: "shared by quietwave", url: "https://open.spotify.com/playlist/37i9dQZF1DWZqd5JICZI0u" },
-  { title: "made me dance in my kitchen", note: "shared by goldenfern", url: "https://www.youtube.com/results?search_query=feel+good+playlist" },
-  { title: "for the 2am crying", note: "shared by mistyshore", url: "https://open.spotify.com/playlist/37i9dQZF1DX7qK8ma5wgG1" },
-];
 
 function Community() {
   return (
