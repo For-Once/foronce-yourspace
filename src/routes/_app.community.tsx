@@ -44,6 +44,12 @@ const NOT_ALONE = [
   "good days are proof that they exist. more are coming.",
 ];
 
+const PLAYLISTS = [
+  { title: "songs that got me through", note: "shared by the community", url: "https://open.spotify.com/playlist/37i9dQZF1DWZqd5JICZI0u" },
+  { title: "made me dance in my kitchen", note: "shared by the community", url: "https://www.youtube.com/results?search_query=feel+good+playlist" },
+  { title: "for the 2am crying", note: "shared by the community", url: "https://open.spotify.com/playlist/37i9dQZF1DX7qK8ma5wgG1" },
+];
+
 
 function Community() {
   return (
