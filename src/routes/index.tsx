@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Cloud, CloudRain, Sun, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MandalaBackground } from "@/components/MandalaBackground";
@@ -109,11 +109,6 @@ function Landing() {
           <Button variant="hero" size="xl" className="w-full sm:w-auto" onClick={enterAnon}>
             Enter Anonymously
             <ArrowRight className="h-4 w-4" />
-          </Button>
-          <Button variant="soft" size="xl" className="w-full sm:w-auto" asChild>
-            <Link to="/onboarding" search={{ account: true }}>
-              Create Account
-            </Link>
           </Button>
         </div>
 
