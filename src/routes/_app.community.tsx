@@ -157,17 +157,15 @@ function Feed({ feed }: { feed: "support" | "good" }) {
   const [moodFilter, setMoodFilter] = useState<string>();
 
   const all = useMemo(() => {
-    const merged = [...posts.filter((p) => p.feed === feed), ...SEED.filter((p) => p.feed === feed)];
-    return merged
+    return posts
+      .filter((p) => p.feed === feed)
       .filter((p) => (moodFilter ? p.mood === moodFilter : true))
       .sort((a, b) => b.createdAt - a.createdAt);
   }, [posts, feed, moodFilter]);
 
   const usedMoods = useMemo(() => {
     const keys = new Set(
-      [...posts.filter((p) => p.feed === feed), ...SEED.filter((p) => p.feed === feed)]
-        .map((p) => p.mood)
-        .filter(Boolean) as string[],
+      posts.filter((p) => p.feed === feed).map((p) => p.mood).filter(Boolean) as string[],
     );
     return MOODS.filter((m) => keys.has(m.key));
   }, [posts, feed]);
