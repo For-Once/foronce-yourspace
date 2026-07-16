@@ -223,6 +223,12 @@ function Feed({ feed }: { feed: "support" | "good" }) {
         </div>
       )}
 
+      {all.length === 0 && (
+        <p className="py-10 text-center text-sm text-muted-foreground">
+          nothing here yet. be the first to share — someone needs to see it.
+        </p>
+      )}
+
       {all.map((p) => {
         const m = p.mood ? getMood(p.mood) : undefined;
         const isHearted = hearted.includes(p.id);
