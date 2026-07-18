@@ -161,7 +161,9 @@ function Journal() {
           <Gallery entries={entries} setEntries={setEntries} />
         </TabsContent>
         <TabsContent value="letters">
-          <Composer entries={entries} setEntries={setEntries} kind="letter" />
+          <LetterChest>
+            <Composer entries={entries} setEntries={setEntries} kind="letter" />
+          </LetterChest>
         </TabsContent>
         <TabsContent value="memories">
           <Composer entries={entries} setEntries={setEntries} kind="memory" />
