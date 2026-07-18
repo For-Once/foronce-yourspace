@@ -1087,3 +1087,79 @@ function FutureLettersInner() {
     </div>
   );
 }
+
+function LetterChest({ children }: { children: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+
+  if (open) {
+    return (
+      <div className="letter-chest-inside">
+        <button
+          onClick={() => setOpen(false)}
+          className="mb-4 flex items-center gap-2 rounded-full border border-gold/30 bg-gold/5 px-3 py-1.5 text-xs text-gold/90 transition-colors hover:bg-gold/10"
+        >
+          <X className="h-3 w-3" /> close the chest
+        </button>
+        {children}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col items-center py-8">
+      <p className="mb-6 max-w-md text-center font-hand text-2xl text-cream/90">
+        a small vintage chest — for the words you don't send.
+      </p>
+      <button
+        onClick={() => setOpen(true)}
+        aria-label="open the letter chest"
+        className="group relative h-56 w-72 select-none"
+      >
+        {/* soft glow behind */}
+        <span className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-gold/10 blur-2xl transition-opacity duration-500 group-hover:bg-gold/20" />
+        {/* box body */}
+        <span
+          className="absolute inset-x-4 bottom-0 h-32 rounded-b-xl border-2 border-[#5c3a1e]/70 shadow-[0_20px_40px_-20px_rgba(0,0,0,0.7),inset_0_-8px_16px_-8px_rgba(0,0,0,0.4)]"
+          style={{
+            background:
+              "linear-gradient(180deg,#8a5a2b 0%,#6b4220 55%,#4c2e15 100%)",
+          }}
+        >
+          <span className="absolute inset-x-6 top-4 h-0.5 bg-gold/30" />
+          <span className="absolute inset-x-6 bottom-6 h-0.5 bg-gold/20" />
+          {/* keyhole */}
+          <span className="absolute left-1/2 top-1/2 grid h-8 w-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[#2a1a0c] shadow-inner">
+            <span className="block h-3 w-3 rounded-full bg-gold/70" />
+          </span>
+        </span>
+        {/* lid (rotates on hover) */}
+        <span
+          className="chest-lid absolute inset-x-4 top-6 h-24 origin-bottom rounded-t-xl border-2 border-[#5c3a1e]/70 shadow-[0_-4px_20px_-8px_rgba(0,0,0,0.5)] transition-transform duration-700 ease-out group-hover:-rotate-[28deg]"
+          style={{
+            background:
+              "linear-gradient(180deg,#a06a34 0%,#7a4a22 100%)",
+          }}
+        >
+          <span className="absolute inset-x-8 top-3 h-0.5 bg-gold/30" />
+          <span className="absolute left-1/2 top-1 h-3 w-6 -translate-x-1/2 rounded-t-md bg-gold/50" />
+        </span>
+        {/* dust motes */}
+        <span className="pointer-events-none absolute inset-0 overflow-hidden opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+          {[0, 1, 2, 3, 4].map((i) => (
+            <span
+              key={i}
+              className="absolute bottom-24 h-1 w-1 rounded-full bg-gold/70"
+              style={{
+                left: `${20 + i * 12}%`,
+                animation: `chest-mote 3.5s ease-in-out ${i * 0.4}s infinite`,
+              }}
+            />
+          ))}
+        </span>
+      </button>
+      <p className="mt-6 text-xs uppercase tracking-widest text-muted-foreground">
+        tap to open
+      </p>
+    </div>
+  );
+}
