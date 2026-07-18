@@ -159,7 +159,7 @@ function Composer({
       </p>
       <Textarea
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => setText(e.target.value.slice(0, MAX_LEN))}
         placeholder={
           feed === "good"
             ? "share something good that happened..."
@@ -167,6 +167,9 @@ function Composer({
         }
         className="min-h-24 resize-none border-border bg-background/30"
       />
+      <p className="mt-1 text-right text-[11px] text-muted-foreground">
+        {text.length}/{MAX_LEN}
+      </p>
       <div className="mt-3">
         <p className="mb-2 text-xs text-muted-foreground">tag a mood (optional)</p>
         <MoodSelector value={mood} onChange={setMood} />
