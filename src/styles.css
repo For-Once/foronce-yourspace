@@ -330,3 +330,23 @@
   100% { transform: translateY(-70px) scale(0.4); opacity: 0; }
 }
 
+@keyframes letter-fold-drift {
+  0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+  25% { transform: translate(-50%, -50%) scale(0.55) rotate(-8deg); opacity: 1; }
+  60% { transform: translate(60vw, 15vh) scale(0.4) rotate(18deg); opacity: 0.9; }
+  100% { transform: translate(160vw, 40vh) scale(0.25) rotate(30deg); opacity: 0; }
+}
+.letter-drift {
+  animation: letter-fold-drift 2.6s cubic-bezier(0.5, 0, 0.6, 1) forwards;
+}
+
+@keyframes letter-burn {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; filter: brightness(1); }
+  30% { transform: translate(-50%, -55%) scale(0.9); filter: brightness(1.1) sepia(0.3); box-shadow: 0 0 40px rgba(255, 140, 60, 0.7); }
+  70% { transform: translate(-50%, -70%) scale(0.5); filter: brightness(0.6) sepia(0.9) hue-rotate(-10deg); opacity: 0.5; }
+  100% { transform: translate(-50%, -110%) scale(0.15); filter: brightness(0.2) sepia(1); opacity: 0; }
+}
+.letter-burn {
+  animation: letter-burn 2.5s ease-in forwards;
+}
+
