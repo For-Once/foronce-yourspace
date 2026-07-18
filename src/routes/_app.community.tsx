@@ -106,22 +106,43 @@ function Composer({
   const { profile } = useProfile();
   const [text, setText] = useState("");
   const [mood, setMood] = useState<string>();
+  const [lastPostAt, setLastPostAt] = useLocalStorage<number>("foronce.community.lastPost", 0);
+  const [postDay, setPostDay] = useLocalStorage<{ day: string; count: number }>(
+    "foronce.community.dayCount",
+    { day: "", count: 0 },
+  );
   const author = profile?.username ?? "anonymous";
 
+  const MIN_INTERVAL_MS = 20_000;
+  const DAILY_LIMIT = 10;
+  const MAX_LEN = 500;
+
   const post = () => {
-    if (!text.trim()) return;
+    const trimmed = text.trim();
+    if (!trimmed) return;
+    if (trimmed.length > MAX_LEN) {
+      affirm(`keep it under ${MAX_LEN} characters — take a breath and try again.`);
+      return;
+    }
+    const now = Date.now();
+    const since = now - lastPostAt;
+    if (since < MIN_INTERVAL_MS) {
+      const wait = Math.ceil((MIN_INTERVAL_MS - since) / 1000);
+      affirm(`slow down a moment — try again in ${wait}s.`);
+      return;
+    }
+    const today = new Date().toDateString();
+    const dayCount = postDay.day === today ? postDay.count : 0;
+    if (dayCount >= DAILY_LIMIT) {
+      affirm("you've shared a lot today. rest — the community will be here tomorrow.");
+      return;
+    }
     setPosts((prev) => [
-      {
-        id: uid(),
-        text: text.trim(),
-        mood,
-        hearts: 0,
-        feed,
-        author,
-        createdAt: Date.now(),
-      },
+      { id: uid(), text: trimmed, mood, hearts: 0, feed, author, createdAt: now },
       ...prev,
     ]);
+    setLastPostAt(now);
+    setPostDay({ day: today, count: dayCount + 1 });
     affirm(
       feed === "good"
         ? "Shared. Someone needed to see something good today."
@@ -138,7 +159,7 @@ function Composer({
       </p>
       <Textarea
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => setText(e.target.value.slice(0, MAX_LEN))}
         placeholder={
           feed === "good"
             ? "share something good that happened..."
@@ -146,6 +167,9 @@ function Composer({
         }
         className="min-h-24 resize-none border-border bg-background/30"
       />
+      <p className="mt-1 text-right text-[11px] text-muted-foreground">
+        {text.length}/{MAX_LEN}
+      </p>
       <div className="mt-3">
         <p className="mb-2 text-xs text-muted-foreground">tag a mood (optional)</p>
         <MoodSelector value={mood} onChange={setMood} />
